@@ -1,0 +1,23 @@
+{
+  "name": "aws-serverless-js",
+  "version": "0.0.1",
+  "license": "(MIT OR Apache-2.0)",
+  "scripts": {
+    "compile": "tsc"
+  },
+  "files": [
+    "/dist"
+  ],
+  "main": "./dist/compile/lambda",
+  "dependencies": {
+    "binary-case": "^1.1.4",
+    "node-mocks-http": "^1.7.5"
+  },
+  "devDependencies": {
+    "@types/node": "^8.10.48",
+    "compression": "^1.7.4",
+    "express": "^4.16.4",
+    "ts-node": "^8.1.0",
+    "typescript": "^3.4.5"
+  }
+}
