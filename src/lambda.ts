@@ -19,7 +19,7 @@ interface APIGWEvent {
   isBase64Encoded: boolean,
   httpMethod: string,
   requestContext: {
-    identity: {
+    identity?: {
       sourceIp: string,
     }
   }
@@ -48,7 +48,7 @@ interface MyRequest {
   resume: () => void,
   socket: Socket,
   connection: {
-    remoteAddress: string
+    remoteAddress?: string
   }
 }
 
@@ -70,7 +70,7 @@ const createRequest = (event: APIGWEvent, reqOptions: httpMocks.RequestOptions):
   req.unpipe = emptyFn;
   req.resume = emptyFn;
   req.socket = mockSocket;
-  req.connection = { remoteAddress: event.requestContext.identity.sourceIp };
+  req.connection = { remoteAddress: event.requestContext.identity ? event.requestContext.identity.sourceIp : undefined };
   return req;
 }
 
