@@ -1,68 +1,7 @@
 import * as url from 'url';
 const binarycase = require('binary-case');
 
-import * as http from 'http';
-
-const createMockResponse = (req:any):any => {
-  const res = new http.ServerResponse(req) as any;
-  let buf: Buffer[] = [];
-  const addChunk = (chunk: string | Buffer, encoding?: string) => {
-    if (encoding && typeof chunk === 'string') {
-      buf.push(Buffer.from(chunk));
-    } else if (Buffer.isBuffer(chunk)) {
-      buf.push(chunk);
-    }
-  }
-  res.write = (chunk: string | Buffer): boolean => {
-    addChunk(chunk);
-    return true;
-  }
-
-  res.end = (chunk: string | Buffer, encoding?: string): void => {
-    addChunk(chunk, encoding);
-    const responseBody = Buffer.concat(buf);
-    const headers = Object.assign({}, res.getHeaders());
-    res.emit('prefinish');
-    res.emit('finish', {
-      body: responseBody,
-      length: Buffer.byteLength(responseBody),
-      isUTF8: !!(headers['content-type'] || '').match(/charset=utf-8/i),
-      statusCode: res.statusCode,
-      headers: headers,
-    });
-  }
-  return res;
-}
-
-const createMockRequest = (opts:any):any => {
-  const req = new http.IncomingMessage({} as any) as any;
-  let body = opts.body;
-  if (typeof opts.body === 'string') {
-    body = Buffer.from(opts.body);
-  }
-  req.method = opts.method.toUpperCase();
-  req.url = opts.path;
-  req.headers = Object.assign({}, opts.headers);
-  req.connection = {
-    remoteAddress: opts.remoteAddress || '123.123.123.123',
-    remotePort: opts.remotePort || 5757,
-    encrypted: opts.secure || true,
-  };
-  if (Buffer.isBuffer(body) && !req.headers['content-length']) {
-    req.headers['content-length'] = Buffer.byteLength(body)
-  }
-
-  let readCalled = !Buffer.isBuffer(body);
-  req._read = () => {
-    if (readCalled) {
-      req.push(null);
-    } else {
-      req.push(body);
-    }
-    readCalled = true;
-  }
-  return req;
-}
+const {createMockRequest, createMockResponse} = require('./httpMocks')
 
 interface StringMap {
   [k: string]: string

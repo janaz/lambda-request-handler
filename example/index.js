@@ -12,8 +12,6 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-console.log("PATH", path.join(__dirname, 'public'))
-
 app.use("/static", express.static(path.join(__dirname, 'public')));
 
 // Return proxy info
@@ -26,7 +24,6 @@ app.use("/get/next", (req, res) => {
 })
 
 app.use('/inspect', (req, res) => {
-  console.log("I'm in!", req.path);
   const ret = {
     body: req.body,
     node: process.version,
@@ -53,7 +50,6 @@ app.use('/inspect', (req, res) => {
       xForwardedFor: req.get('x-forwarded-for'),
     },
   };
-  console.log(ret);
   res.json(ret);
 });
 
