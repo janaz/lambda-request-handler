@@ -1,7 +1,7 @@
 import * as url from 'url';
 const binarycase = require('binary-case');
 
-const {createMockRequest, createMockResponse} = require('./httpMocks')
+import { createMockRequest, createMockResponse, Response} from './httpMock';
 
 interface StringMap {
   [k: string]: string
@@ -26,10 +26,10 @@ interface APIGWEvent {
 }
 
 interface APIGWResponse {
-    statusCode: number,
-    headers: StringOrArrayMap,
-    body: string,
-    isBase64Encoded: boolean
+  statusCode: number,
+  headers: StringOrArrayMap,
+  body: string,
+  isBase64Encoded: boolean
 }
 
 interface ResponseData {
@@ -81,17 +81,9 @@ const handler = (app: any) => (event: APIGWEvent) => {
         body,
       };
 
-      return new Promise<ResponseData>((resolve) => {
+      return new Promise<Response>((resolve) => {
         const req = createRequest(event, reqOptions);
-        const res = createResponse(req, (out: any) => {
-            resolve({
-              statusCode: out.statusCode,
-              headers: out.headers,
-              buffer: out.body,
-              isUTF8: out.isUTF8,
-            });
-          }
-        );
+        const res = createResponse(req, resolve);
         app.handle(req, res);
       })
     })
@@ -115,7 +107,7 @@ const handler = (app: any) => (event: APIGWEvent) => {
           }
         });
       const isBase64Encoded = !res.isUTF8;
-      const body = res.buffer.toString(isBase64Encoded ? 'base64' : 'utf8');
+      const body = res.body.toString(isBase64Encoded ? 'base64' : 'utf8');
       return {
         statusCode: res.statusCode,
         body,

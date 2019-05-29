@@ -12,7 +12,7 @@ const L = lambda(app);
 debug('end of init');
 
 L(event)
-  .then(({statusCode, headers, isBase64Encoded}) => console.log({statusCode, headers, isBase64Encoded}))
+  .then(({statusCode, headers, isBase64Encoded, body}) => console.log({body, statusCode, headers, isBase64Encoded}))
   .catch(console.error);
 
 L(health)
