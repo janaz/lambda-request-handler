@@ -1,18 +1,33 @@
+const connect = require('connect');
 const express = require('express');
+const path = require('path');
 const cookieParser = require('cookie-parser');
 
 const app = express();
 
-app.set('trust proxy', true); // trust all proxies
-app.disable('x-powered-by');
+// app.set('trust proxy', true); // trust all proxies
+// app.disable('x-powered-by');
 
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+console.log("PATH", path.join(__dirname, 'public'))
+
+app.use("/static", express.static(path.join(__dirname, 'public')));
+
 // Return proxy info
-app.all('/inspect', (req, res) => {
-  res.json({
+app.use("/get", (req, res) => {
+  res.sendFile(path.join(__dirname, 'public/file.txt'))
+})
+
+app.use("/get/next", (req, res) => {
+  res.sendFile(path.join(__dirname, 'public/file.txt'))
+})
+
+app.use('/inspect', (req, res) => {
+  console.log("I'm in!", req.path);
+  const ret = {
     body: req.body,
     node: process.version,
     trustProxy: app.get('trust proxy'),
@@ -37,7 +52,9 @@ app.all('/inspect', (req, res) => {
       url: req.url,
       xForwardedFor: req.get('x-forwarded-for'),
     },
-  });
+  };
+  console.log(ret);
+  res.json(ret);
 });
 
 module.exports = app;

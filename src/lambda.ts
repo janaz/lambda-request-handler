@@ -1,7 +1,68 @@
 import * as url from 'url';
-import { EventEmitter } from 'events';
-import * as httpMocks from 'node-mocks-http';
 const binarycase = require('binary-case');
+
+import * as http from 'http';
+
+const createMockResponse = (req:any):any => {
+  const res = new http.ServerResponse(req) as any;
+  let buf: Buffer[] = [];
+  const addChunk = (chunk: string | Buffer, encoding?: string) => {
+    if (encoding && typeof chunk === 'string') {
+      buf.push(Buffer.from(chunk));
+    } else if (Buffer.isBuffer(chunk)) {
+      buf.push(chunk);
+    }
+  }
+  res.write = (chunk: string | Buffer): boolean => {
+    addChunk(chunk);
+    return true;
+  }
+
+  res.end = (chunk: string | Buffer, encoding?: string): void => {
+    addChunk(chunk, encoding);
+    const responseBody = Buffer.concat(buf);
+    const headers = Object.assign({}, res.getHeaders());
+    res.emit('prefinish');
+    res.emit('finish', {
+      body: responseBody,
+      length: Buffer.byteLength(responseBody),
+      isUTF8: !!(headers['content-type'] || '').match(/charset=utf-8/i),
+      statusCode: res.statusCode,
+      headers: headers,
+    });
+  }
+  return res;
+}
+
+const createMockRequest = (opts:any):any => {
+  const req = new http.IncomingMessage({} as any) as any;
+  let body = opts.body;
+  if (typeof opts.body === 'string') {
+    body = Buffer.from(opts.body);
+  }
+  req.method = opts.method.toUpperCase();
+  req.url = opts.path;
+  req.headers = Object.assign({}, opts.headers);
+  req.connection = {
+    remoteAddress: opts.remoteAddress || '123.123.123.123',
+    remotePort: opts.remotePort || 5757,
+    encrypted: opts.secure || true,
+  };
+  if (Buffer.isBuffer(body) && !req.headers['content-length']) {
+    req.headers['content-length'] = Buffer.byteLength(body)
+  }
+
+  let readCalled = !Buffer.isBuffer(body);
+  req._read = () => {
+    if (readCalled) {
+      req.push(null);
+    } else {
+      req.push(body);
+    }
+    readCalled = true;
+  }
+  return req;
+}
 
 interface StringMap {
   [k: string]: string
@@ -35,50 +96,30 @@ interface APIGWResponse {
 interface ResponseData {
   statusCode: number,
   headers: StringOrArrayMap,
-  data: string,
   buffer: Buffer,
+  isUTF8: boolean,
 }
 
-interface Socket {
-  destroy: () => void,
-}
-
-interface MyRequest {
-  unpipe: () => void,
-  resume: () => void,
-  socket: Socket,
-  connection: {
-    remoteAddress?: string
-  }
-}
-
-interface MyResponse {
-  on: (ev: string, cb: (err?: Error) => void) => void,
-}
 
 const getPathWithQueryStringParams = (event: APIGWEvent): string => {
   return url.format({ pathname: event.path, query: event.queryStringParameters });
 }
 
-const emptyFn = () => {};
-
-const mockSocket: Socket = { destroy: emptyFn };
-
-const createRequest = (event: APIGWEvent, reqOptions: httpMocks.RequestOptions): httpMocks.MockRequest<MyRequest> => {
-  const req: httpMocks.MockRequest<MyRequest> = httpMocks.createRequest(reqOptions);
-  // interface required by 'finalhandler'
-  req.unpipe = emptyFn;
-  req.resume = emptyFn;
-  req.socket = mockSocket;
-  req.connection = { remoteAddress: event.requestContext.identity ? event.requestContext.identity.sourceIp : undefined };
-  return req;
-}
-
-const createResponse = (req: httpMocks.MockRequest<MyRequest>): httpMocks.MockResponse<MyResponse> => {
-  return httpMocks.createResponse({
-    eventEmitter: EventEmitter,
-    req: req,
+const createRequest = (event: APIGWEvent, reqOptions: any): any => {
+  const req = createMockRequest({
+    path: reqOptions.path,
+    method: reqOptions.method,
+    body: reqOptions.body,
+    headers: reqOptions.headers,
+    remoteAddress: event.requestContext.identity ? event.requestContext.identity.sourceIp : undefined,
   });
+  return req;
+};
+
+const createResponse = (req: any, onEnd: any): any => {
+  const res = createMockResponse(req);
+  res.on('finish', onEnd);
+  return res;
 }
 
 const handler = (app: any) => (event: APIGWEvent) => {
@@ -86,43 +127,33 @@ const handler = (app: any) => (event: APIGWEvent) => {
     .then(() => {
       let headers: StringMap;
       let body: Buffer;
-      if (event.body && !event.headers['Content-Length']) {
+      if (event.body && !event.headers['content-length']) {
         body = Buffer.from(event.body, event.isBase64Encoded ? 'base64' : 'utf8');
-        headers = Object.assign({}, event.headers, {'Content-Length': Buffer.byteLength(body)})
+        headers = Object.assign({}, event.headers, {'content-length': Buffer.byteLength(body)})
       } else {
         body = new Buffer(0);
         headers = event.headers;
       }
 
-      const reqOptions: httpMocks.RequestOptions = {
-        method: event.httpMethod as httpMocks.RequestMethod,
+      const reqOptions = {
+        method: event.httpMethod,
         path: getPathWithQueryStringParams(event),
         headers,
+        body,
       };
 
-      const req = createRequest(event, reqOptions);
-      const res = createResponse(req);
       return new Promise<ResponseData>((resolve) => {
-        res.on('end', () => {
-          resolve({
-            statusCode: res._getStatusCode(),
-            headers: res._getHeaders(),
-            data: res._getData(),
-            buffer: res._getBuffer(),
-          });
-        });
-        res.on('error', (e) => {
-          resolve({
-            statusCode: 500,
-            headers: {},
-            data: e!.message,
-            buffer: new Buffer(0),
-          });
-        });
+        const req = createRequest(event, reqOptions);
+        const res = createResponse(req, (out: any) => {
+            resolve({
+              statusCode: out.statusCode,
+              headers: out.headers,
+              buffer: out.body,
+              isUTF8: out.isUTF8,
+            });
+          }
+        );
         app.handle(req, res);
-        if (body.length > 0) {
-          req.send(body);
-        }
       })
     })
     .then(res => {
@@ -144,8 +175,8 @@ const handler = (app: any) => (event: APIGWEvent) => {
             }
           }
         });
-      const isBase64Encoded = res.buffer.length > 0;
-      const body = res.buffer.length > 0 ? res.buffer.toString('base64') : res.data;
+      const isBase64Encoded = !res.isUTF8;
+      const body = res.buffer.toString(isBase64Encoded ? 'base64' : 'utf8');
       return {
         statusCode: res.statusCode,
         body,
