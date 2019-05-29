@@ -4,8 +4,6 @@ const hugeBody = require('../integration/huge.json')
 
 const {createRequest, createResponse} = require('../src/httpMock');
 
-let body = Buffer.from(JSON.stringify(hugeBody));
-
 const req2 = createRequest({
   body: JSON.stringify(hugeBody),
   method: 'GET',

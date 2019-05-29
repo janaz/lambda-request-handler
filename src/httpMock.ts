@@ -12,7 +12,6 @@ export interface MockRequestOptions {
 
 export interface MockResponse {
   body: Buffer,
-  length: number,
   isUTF8: boolean,
   statusCode: number,
   headers: OutgoingHttpHeaders,
@@ -21,6 +20,7 @@ export interface MockResponse {
 interface ObjectWithStringKeys<T> {
   [key: string]: T;
 }
+
 const keysToLowerCase = <T>(headers: ObjectWithStringKeys<T>): ObjectWithStringKeys<T> => {
   const lowerCaseHeaders: ObjectWithStringKeys<T> = {};
   Object.keys(headers).forEach(k => {
@@ -29,16 +29,22 @@ const keysToLowerCase = <T>(headers: ObjectWithStringKeys<T>): ObjectWithStringK
   return lowerCaseHeaders;
 }
 
+const toBuffer = (param: string | Buffer | undefined): Buffer => {
+  if (Buffer.isBuffer(param)) {
+    return param;
+  } else if (typeof param === 'string') {
+    return Buffer.from(param);
+  } else {
+    return new Buffer(0);
+  }
+}
+
 export const createMockResponse = (req: IncomingMessage): ServerResponse => {
   const res = new ServerResponse(req);
   let buf: Buffer[] = [];
-  const addChunk = (chunk: string | Buffer) => {
-    if (typeof chunk === 'string') {
-      buf.push(Buffer.from(chunk));
-    } else if (Buffer.isBuffer(chunk)) {
-      buf.push(chunk);
-    }
-  }
+
+  const addChunk = (chunk: string | Buffer) => buf.push(toBuffer(chunk));
+
   res.write = (chunk: string | Buffer) => {
     addChunk(chunk);
     return true;
@@ -51,7 +57,6 @@ export const createMockResponse = (req: IncomingMessage): ServerResponse => {
     res.emit('prefinish');
     const response: MockResponse = {
       body: responseBody,
-      length: Buffer.byteLength(responseBody),
       isUTF8: !!(headers['content-type'] as string || '').match(/charset=utf-8/i),
       statusCode: res.statusCode,
       headers: headers,
@@ -63,13 +68,9 @@ export const createMockResponse = (req: IncomingMessage): ServerResponse => {
 
 export const createMockRequest = (opts: MockRequestOptions): IncomingMessage => {
   const req = new IncomingMessage(undefined as any);
-  let body: Buffer = new Buffer(0);
-  if (typeof opts.body === 'string') {
-    body = Buffer.from(opts.body);
-  } else if (Buffer.isBuffer(opts.body)) {
-    body = opts.body;
-  }
+  const body = toBuffer(opts.body);
   const contentLength = Buffer.byteLength(body);
+
   req.method = opts.method.toUpperCase();
   req.url = opts.path;
   req.headers = keysToLowerCase(opts.headers);
@@ -78,6 +79,7 @@ export const createMockRequest = (opts: MockRequestOptions): IncomingMessage => 
     remotePort: opts.remotePort || 5757,
     encrypted: opts.secure || true,
   } as any;
+
   if (contentLength > 0 && !req.headers['content-length']) {
     req.headers['content-length'] = contentLength.toString();
   }
