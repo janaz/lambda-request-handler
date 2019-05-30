@@ -1,4 +1,4 @@
-import {OutgoingHttpHeaders} from 'http';
+import { OutgoingHttpHeaders } from 'http';
 const binarycase = require('binary-case');
 
 const fixResponseHeaders = (headers: OutgoingHttpHeaders): OutgoingHttpHeaders => {

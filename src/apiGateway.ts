@@ -1,4 +1,4 @@
-import {IncomingHttpHeaders, OutgoingHttpHeaders} from 'http';
+import { IncomingHttpHeaders, OutgoingHttpHeaders } from 'http';
 
 interface StringMap {
   [k: string]: string
@@ -6,15 +6,16 @@ interface StringMap {
 
 export interface APIGatewayEvent {
   path: string,
-  queryStringParameters: StringMap,
-  body?: string,
+  queryStringParameters: StringMap | null,
+  body: string | null | undefined,
   headers: IncomingHttpHeaders,
   isBase64Encoded: boolean,
   httpMethod: string,
   requestContext: {
     identity?: {
       sourceIp: string,
-    }
+    },
+    [k: string]: any
   }
 }
 

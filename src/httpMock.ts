@@ -1,4 +1,4 @@
-import {IncomingHttpHeaders, OutgoingHttpHeaders, ServerResponse, IncomingMessage} from 'http';
+import { IncomingHttpHeaders, OutgoingHttpHeaders, ServerResponse, IncomingMessage } from 'http';
 
 export interface MockRequestOptions {
   body: string | Buffer
@@ -15,8 +15,8 @@ export interface MockResponse {
   isUTF8: boolean,
   statusCode: number,
   headers: OutgoingHttpHeaders,
-
 }
+
 interface ObjectWithStringKeys<T> {
   [key: string]: T;
 }
