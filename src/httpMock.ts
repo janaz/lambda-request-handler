@@ -84,12 +84,12 @@ export const createMockRequest = (opts: MockRequestOptions): IncomingMessage => 
     req.headers['content-length'] = contentLength.toString();
   }
 
-  let pushData = contentLength > 0;
+  let shouldPushData = contentLength > 0;
 
   req._read = () => {
-    if (pushData) {
+    if (shouldPushData) {
       req.push(body);
-      pushData = false;
+      shouldPushData = false;
     } else {
       req.push(null);
     }
