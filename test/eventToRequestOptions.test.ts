@@ -10,7 +10,7 @@ describe('eventToRequestOptions', () => {
       "method": "GET",
       "path": "/inspect",
       "remoteAddress": "203.13.23.10",
-      "body": new Buffer(0),
+      "body": Buffer.alloc(0),
       "headers":  {
         "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3",
         "Accept-Language": "en-US,en;q=0.9,pl-PL;q=0.8,pl;q=0.7,ru;q=0.6",
@@ -42,7 +42,7 @@ describe('eventToRequestOptions', () => {
       "method": "GET",
       "path": "/inspect",
       "remoteAddress": undefined,
-      "body": new Buffer(0),
+      "body": Buffer.alloc(0),
       "headers":  {
         "user-agent": "ELB-HealthChecker/2.0",
       },

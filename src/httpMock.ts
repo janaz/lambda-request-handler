@@ -35,7 +35,7 @@ const toBuffer = (param: string | Buffer | undefined): Buffer => {
   } else if (typeof param === 'string') {
     return Buffer.from(param);
   } else {
-    return new Buffer(0);
+    return Buffer.alloc(0);
   }
 }
 
