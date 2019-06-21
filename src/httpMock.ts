@@ -41,9 +41,9 @@ const toBuffer = (param: string | Buffer | undefined): Buffer => {
 
 export const createMockResponse = (req: IncomingMessage): ServerResponse => {
   const res = new ServerResponse(req);
-  let buf: Buffer[] = [];
+  const chunks: Buffer[] = [];
 
-  const addChunk = (chunk: string | Buffer) => buf.push(toBuffer(chunk));
+  const addChunk = (chunk: string | Buffer) => chunks.push(toBuffer(chunk));
 
   res.write = (chunk: string | Buffer) => {
     addChunk(chunk);
@@ -52,15 +52,15 @@ export const createMockResponse = (req: IncomingMessage): ServerResponse => {
 
   res.end = (chunk: any) => {
     addChunk(chunk);
-    const responseBody = Buffer.concat(buf);
+    const responseBody = Buffer.concat(chunks);
     const headers = Object.assign({}, res.getHeaders());
-    res.emit('prefinish');
     const response: MockResponse = {
       body: responseBody,
       isUTF8: !!(headers['content-type'] as string || '').match(/charset=utf-8/i),
       statusCode: res.statusCode,
       headers: headers,
     }
+    res.emit('prefinish');
     res.emit('finish', response);
   }
   return res;
@@ -77,7 +77,7 @@ export const createMockRequest = (opts: MockRequestOptions): IncomingMessage => 
   req.connection = {
     remoteAddress: opts.remoteAddress || '123.123.123.123',
     remotePort: opts.remotePort || 5757,
-    encrypted: opts.secure || true,
+    encrypted: opts.secure !== false,
   } as any;
 
   if (contentLength > 0 && !req.headers['content-length']) {
