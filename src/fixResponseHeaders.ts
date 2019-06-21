@@ -1,5 +1,7 @@
 import { OutgoingHttpHeaders } from 'http';
-const binarycase = require('binary-case');
+const binaryCase = require('binary-case');
+
+const variations = binaryCase.variations('set-cookie');
 
 const fixResponseHeaders = (headers: OutgoingHttpHeaders): OutgoingHttpHeaders => {
   const retVal: OutgoingHttpHeaders = {};
@@ -11,7 +13,7 @@ const fixResponseHeaders = (headers: OutgoingHttpHeaders): OutgoingHttpHeaders =
       const arrayValue = headers[k] as string[];
       if (k === 'set-cookie') {
         arrayValue.forEach((value, i) => {
-          retVal[binarycase(k, i)] = value
+          retVal[variations[i]] = value
         });
       } else {
         retVal[k] = arrayValue.join(',');
