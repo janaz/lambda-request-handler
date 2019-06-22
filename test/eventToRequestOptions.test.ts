@@ -1,7 +1,7 @@
 import eventToRequestOptions from '../src/eventToRequestOptions';
 
-import event = require('./fixtures/event.json');
-import eventHealth = require('./fixtures/health-event.json');
+import event from './fixtures/event.json';
+import eventHealth from './fixtures/health-event.json';
 
 describe('eventToRequestOptions', () => {
   it('converts Api Gateway event to RequestOptions object', () => {
@@ -11,6 +11,7 @@ describe('eventToRequestOptions', () => {
       "path": "/inspect",
       "remoteAddress": "203.13.23.10",
       "body": Buffer.alloc(0),
+      "ssl": true,
       "headers":  {
         "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3",
         "Accept-Language": "en-US,en;q=0.9,pl-PL;q=0.8,pl;q=0.7,ru;q=0.6",
@@ -43,6 +44,7 @@ describe('eventToRequestOptions', () => {
       "path": "/inspect",
       "remoteAddress": undefined,
       "body": Buffer.alloc(0),
+      "ssl": true,
       "headers":  {
         "user-agent": "ELB-HealthChecker/2.0",
       },

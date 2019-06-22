@@ -7,7 +7,7 @@ export interface MockRequestOptions {
   headers: IncomingHttpHeaders
   remoteAddress?: string
   remotePort?: number
-  secure?: boolean
+  ssl?: boolean
 }
 
 export interface MockResponse {
@@ -77,7 +77,7 @@ export const createMockRequest = (opts: MockRequestOptions): IncomingMessage => 
   req.connection = {
     remoteAddress: opts.remoteAddress || '123.123.123.123',
     remotePort: opts.remotePort || 5757,
-    encrypted: opts.secure !== false,
+    encrypted: opts.ssl ? true : false,
   } as any;
 
   if (contentLength > 0 && !req.headers['content-length']) {
