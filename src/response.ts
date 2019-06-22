@@ -1,4 +1,4 @@
-import { MockResponse} from './httpMock';
+import { MockResponse} from './request-handler/httpMock';
 import { APIGatewayResponse} from './apiGateway';
 import fixResponseHeaders from './fixResponseHeaders'
 

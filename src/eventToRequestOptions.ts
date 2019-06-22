@@ -1,6 +1,6 @@
 import * as url from 'url';
 
-import { MockRequestOptions } from './httpMock';
+import { MockRequestOptions } from './request-handler/httpMock';
 import { APIGatewayEvent } from './apiGateway';
 
 const eventToRequestOptions = (event: APIGatewayEvent): MockRequestOptions => {

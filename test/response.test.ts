@@ -1,5 +1,5 @@
 import { mockResponseToApiGatewayResponse, errorResponse} from '../src/response';
-import { MockResponse } from '../src/httpMock';
+import { MockResponse } from '../src/request-handler/httpMock';
 
 
 describe('mockResponseToApiGatewayResponse', () => {

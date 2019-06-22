@@ -2,7 +2,7 @@ const app = require('../example/koa').callback()
 
 const hugeBody = require('../integration/huge.json')
 
-const {createRequest, createResponse} = require('../src/httpMock');
+const {createRequest, createResponse} = require('../src/request-handler/httpMock');
 
 const req2 = createRequest({
   body: JSON.stringify(hugeBody),
