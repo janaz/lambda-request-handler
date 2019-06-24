@@ -19,5 +19,7 @@ jobs:
         skip_cleanup: true
         provider: npm
         email: janaz9@gmail.com
+        api_key:
+          secure: z7SPgnfCsMrKkh1LWvnQYe7qBRE8hycbP2TPJwulS6fq06+lEztLr5PWfKme41kheB+MUx9RdbPhOG2bXinkM54clz1yoB2R5bAnacXfwff57slM9qlvuhIHyA/IxeQBLqf4IqC2u+2x2/gvqk/4KKSy2E7swXmx/P59lHuRun5RvcijlEq8kYa45ICUnPvR+wu8sRE3pjzWNLC+4QD5WpV03q0SUyVN3EYrXaPPjdVV8sAodSoRuKByJl30CN/lebcMXgS+6INp6CCQ/ygysCf55hQaGUfEDO1ZfTHObYKYXkkHJMk5+/8nLpKWVWo2PaYN4dDTYUqrdQYkYO3q+jtJsP+tVUkoXX6d2q9tX18NroWlrgUJNgZgeRmtwgE9SmpCK4ONum5e3jttsWmLvnjBJt5xv8TXJjxqGmQvhIQZUewo0pMfBt8OJOIGPaL+lS385A/ekxaAHbKNi5fBNzq77qRZafgop3EU//a28gVSsECznr5p4pPy/MpvWS7OUHkB7EQBMhE/MsGkPimP3AzCus033D5ma7Xql1F6MMVPia6YiLg4yls3PNzzEtt1kQwolzuiEObWfYDLj8c4rLAMeDdKqRhlHWy9CHeH59rnXUX90HQcjsPy3pZw/1MqPhBdopVUW3So4/diVm15U8n21WNSCI92uXpP69TFUkY=
         on:
           tags: true
