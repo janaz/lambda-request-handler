@@ -1,0 +1,23 @@
+language: node_js
+install:
+  - yarn install
+node_js:
+  - '6'
+  - '8'
+  - '10'
+  - '12'
+script:
+  - yarn test
+jobs:
+  include:
+    - stage: deploy
+      node_js: '12'
+      script: skip
+      before_deploy:
+        - yarn compile
+      deploy:
+        skip_cleanup: true
+        provider: npm
+        email: janaz9@gmail.com
+        on:
+          tags: true
