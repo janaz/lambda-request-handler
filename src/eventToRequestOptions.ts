@@ -1,9 +1,9 @@
 import * as url from 'url';
 
-import { MockRequestOptions } from './request-handler/httpMock';
+import { InProcessRequestOptions } from 'in-process-request';
 import { APIGatewayEvent } from './apiGateway';
 
-const eventToRequestOptions = (event: APIGatewayEvent): MockRequestOptions => {
+const eventToRequestOptions = (event: APIGatewayEvent): InProcessRequestOptions => {
   return {
     method: event.httpMethod,
     path: url.format({ pathname: event.path, query: event.queryStringParameters }),

@@ -1,21 +1,20 @@
 import { RequestListener } from 'http';
 
-import mockRequestHandler from './request-handler/handler';
+import inProcessRequestHandler from 'in-process-request';
 import { APIGatewayEvent } from './apiGateway';
 import eventToRequestOptions from './eventToRequestOptions'
-import {mockResponseToApiGatewayResponse, errorResponse} from './response';
-
+import { inProcessResponseToApiGatewayResponse, errorResponse } from './response';
 
 const handler = (app: RequestListener) => {
-  const appHandler = mockRequestHandler(app);
+  const appHandler = inProcessRequestHandler(app);
   return (event: APIGatewayEvent) => {
     const reqOptions = eventToRequestOptions(event);
     return appHandler(reqOptions)
-    .then(mockResponseToApiGatewayResponse)
-    .catch(e => {
-      console.error(e);
-      return errorResponse();
-    });
+      .then(inProcessResponseToApiGatewayResponse)
+      .catch(e => {
+        console.error(e);
+        return errorResponse();
+      });
   }
 };
 

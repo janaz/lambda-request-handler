@@ -1,13 +1,14 @@
-import { MockResponse} from './request-handler/httpMock';
+import { InProcessResponse } from 'in-process-request';
 import { APIGatewayResponse} from './apiGateway';
 import fixResponseHeaders from './fixResponseHeaders'
 
-export const mockResponseToApiGatewayResponse = (response: MockResponse): APIGatewayResponse => {
+export const inProcessResponseToApiGatewayResponse = (response: InProcessResponse): APIGatewayResponse => {
+  const encoding = response.isUTF8 ? 'utf8' : 'base64';
   return {
     statusCode: response.statusCode,
     headers: fixResponseHeaders(response.headers),
-    body: response.body.toString(response.isUTF8 ? 'utf8' : 'base64'),
-    isBase64Encoded: !response.isUTF8
+    body: response.body.toString(encoding),
+    isBase64Encoded: encoding === 'base64'
   };
 };
 
