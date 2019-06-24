@@ -8,7 +8,7 @@ describe('eventToRequestOptions', () => {
     const reqOpts = eventToRequestOptions(event);
     expect(reqOpts).toEqual({
       "method": "GET",
-      "path": "/inspect",
+      "path": "/reflect",
       "remoteAddress": "203.13.23.10",
       "body": Buffer.alloc(0),
       "ssl": true,
@@ -41,7 +41,7 @@ describe('eventToRequestOptions', () => {
     const reqOpts = eventToRequestOptions(eventHealth);
     expect(reqOpts).toEqual({
       "method": "GET",
-      "path": "/inspect",
+      "path": "/reflect",
       "remoteAddress": undefined,
       "body": Buffer.alloc(0),
       "ssl": true,

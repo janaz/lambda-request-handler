@@ -3,13 +3,16 @@
   "version": "0.0.4",
   "license": "(MIT OR Apache-2.0)",
   "scripts": {
-    "compile": "tsc"
+    "compile": "tsc",
+    "test": "jest"
   },
   "files": [
     "/dist"
   ],
   "main": "./dist/compile/lambda",
   "dependencies": {
+    "@types/cookie-parser": "^1.4.1",
+    "@types/express": "^4.17.0",
     "binary-case": "^1.1.4",
     "in-process-request": "^0.0.1-beta.6"
   },

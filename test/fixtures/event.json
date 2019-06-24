@@ -1,6 +1,6 @@
 {
   "resource": "/{proxy+}",
-  "path": "/inspect",
+  "path": "/reflect",
   "httpMethod": "GET",
   "headers": {
       "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3",
@@ -98,7 +98,7 @@
       "httpMethod": "GET",
       "extendedRequestId": "ZdH7DFEUSwMFuOQ=",
       "requestTime": "10/May/2019:06:55:02 +0000",
-      "path": "/app/inspect",
+      "path": "/app/reflect",
       "accountId": "248139140343",
       "protocol": "HTTP/1.1",
       "stage": "app",

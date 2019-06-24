@@ -5,7 +5,7 @@
       }
   },
   "httpMethod": "GET",
-  "path": "/inspect",
+  "path": "/reflect",
   "queryStringParameters": {},
   "headers": {
       "user-agent": "ELB-HealthChecker/2.0"
