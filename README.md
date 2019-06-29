@@ -41,3 +41,51 @@ module.exports = { handler }
 ```
 
 If the above file in your Lambda source was called `index.js` then the name of the handler in the Lambda configuration is `index.handler`
+
+### Advanced example
+
+Sometimes the application needs to read configuration from remote source before it can start processing requests. For example it may need to decrypt some secrets managed by KMS.
+
+```javascript
+const lambdaRequestHandler = require('lambda-request-handler')
+const AWS = require('aws-sdk')
+const express = require('express')
+
+const kms = new AWS.KMS()
+
+const myKmsPromise = () =>
+  kms.decrypt({
+    CiphertextBlob: Buffer.from(process.env.ENCRYPTED_SECRET, 'base64')
+  })
+  .promise()
+  .then((data) => {
+    process.env.SECRET = data.Plaintext.toString('ascii')
+  });
+
+cont app = express()
+
+app.get('/secret', (req, res) => {
+  res.json({
+    secret: process.env.SECRET,
+  })
+})
+
+const myAppHandler = lambdaRequestHandler(app)
+
+let _myKmsPromise;
+
+const handler = (event) => {
+  if (!_myKmsPromise) {
+    // _myKmsPromise is in global scope so that only one request to KMS is made during this Lambda lifecycle
+    _myKmsPromise = myKmsPromise();
+  }
+  return _myKmsPromise
+    .then(() => {
+      // at this point the secret is decrypted and available as process.env.SECRET to the app
+      return myAppHandler(event);
+    })
+}
+
+module.exports = { handler }
+
+```
