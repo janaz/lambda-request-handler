@@ -53,14 +53,12 @@ const express = require('express')
 
 const kms = new AWS.KMS()
 
-const myKmsPromise = () =>
-  kms.decrypt({
+const myKmsPromise = async () => {
+  const data = await kms.decrypt({
     CiphertextBlob: Buffer.from(process.env.ENCRYPTED_SECRET, 'base64')
-  })
-  .promise()
-  .then((data) => {
-    process.env.SECRET = data.Plaintext.toString('ascii')
-  });
+  }).promise()
+  process.env.SECRET = data.Plaintext.toString('ascii')
+};
 
 const app = express()
 
@@ -74,16 +72,14 @@ const myAppHandler = lambdaRequestHandler(app)
 
 let _myKmsPromise;
 
-const handler = (event) => {
+const handler = async (event) => {
   if (!_myKmsPromise) {
     // _myKmsPromise is in global scope so that only one request to KMS is made during this Lambda lifecycle
     _myKmsPromise = myKmsPromise();
   }
-  return _myKmsPromise
-    .then(() => {
-      // at this point the secret is decrypted and available as process.env.SECRET to the app
-      return myAppHandler(event);
-    })
+  await _myKmsPromise;
+  // at this point the secret is decrypted and available as process.env.SECRET to the app
+  return myAppHandler(event)
 }
 
 module.exports = { handler }
