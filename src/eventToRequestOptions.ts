@@ -10,7 +10,7 @@ const eventToRequestOptions = (event: APIGatewayEvent): InProcessRequestOptions 
     headers: event.headers,
     body: Buffer.from(event.body || '', event.isBase64Encoded ? 'base64' : 'utf8'),
     ssl: true,
-    remoteAddress: event.requestContext.identity ? event.requestContext.identity.sourceIp : undefined
+    remoteAddress: event.requestContext && event.requestContext.identity && event.requestContext.identity.sourceIp
   };
 }
 export default eventToRequestOptions;

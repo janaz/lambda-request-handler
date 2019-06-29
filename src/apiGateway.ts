@@ -11,7 +11,7 @@ export interface APIGatewayEvent {
   headers: IncomingHttpHeaders,
   isBase64Encoded: boolean,
   httpMethod: string,
-  requestContext: {
+  requestContext?: {
     identity?: {
       sourceIp: string,
     },
