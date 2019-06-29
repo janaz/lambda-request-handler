@@ -62,7 +62,7 @@ const myKmsPromise = () =>
     process.env.SECRET = data.Plaintext.toString('ascii')
   });
 
-cont app = express()
+const app = express()
 
 app.get('/secret', (req, res) => {
   res.json({
