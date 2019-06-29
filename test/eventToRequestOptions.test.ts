@@ -40,8 +40,8 @@ describe('eventToRequestOptions', () => {
   it('converts Api Gateway health check event to RequestOptions object', () => {
     const reqOpts = eventToRequestOptions(eventHealth);
     expect(reqOpts).toEqual({
-      "method": "GET",
-      "path": "/reflect",
+      "method": "HEAD",
+      "path": "/",
       "remoteAddress": undefined,
       "body": Buffer.alloc(0),
       "ssl": true,

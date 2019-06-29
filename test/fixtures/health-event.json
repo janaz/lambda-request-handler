@@ -4,8 +4,8 @@
           "targetGroupArn": "arn:aws:elasticloadbalancing:ap-southeast-2:248139140343:targetgroup/default/277714cd42070f8a"
       }
   },
-  "httpMethod": "GET",
-  "path": "/reflect",
+  "httpMethod": "HEAD",
+  "path": "/",
   "queryStringParameters": {},
   "headers": {
       "user-agent": "ELB-HealthChecker/2.0"
