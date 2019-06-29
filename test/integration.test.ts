@@ -14,7 +14,7 @@ describe('integration', () => {
       expect(response.headers["x-powered-by"]).toEqual('Express');
       const json = JSON.parse(response.body.toString());
       expect(json).toEqual({
-        baseUrl: "/reflect",
+        baseUrl: "",
         body: {},
         cookies: {
           s_fid: "39BE527E3767FB80-174D965C9E0459D6",
@@ -27,7 +27,7 @@ describe('integration', () => {
         method: "GET",
         originalUrl: "/reflect",
         params: {},
-        path: "/",
+        path: "/reflect",
         protocol: "https",
         query: {},
         secure: true,
@@ -38,7 +38,7 @@ describe('integration', () => {
           "execute-api",
           "uqho4e39s9",
         ],
-        url: "/",
+        url: "/reflect",
         xForwardedFor: "203.13.23.10, 70.132.29.78",
         xhr: false,
       })

@@ -10,7 +10,7 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use("/static", express.static(path.join(__dirname, 'public')));
 
-app.use('/reflect', (req, res) => {
+app.get('/reflect', (req, res) => {
   res.json({
       body: req.body,
       cookies: req.cookies,
