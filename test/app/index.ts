@@ -17,6 +17,10 @@ app.get('/render', (_, res) => {
   res.render('page');
 });
 
+app.get('/user/:id', (req, res) => {
+  res.json({name: 'John', id: req.params.id});
+});
+
 app.all('/reflect', (req, res) => {
   res.json({
       body: req.body,

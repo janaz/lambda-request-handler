@@ -112,4 +112,22 @@ describe('integration', () => {
       })
     })
   })
+
+  it('handles routing with params', () => {
+    const myEvent = {
+      path: "/user/123",
+      httpMethod: "GET",
+      headers: {},
+      queryStringParameters: {},
+      isBase64Encoded: false,
+      body: null
+    }
+    return handler(myEvent).then(response => {
+      expect(response.statusCode).toEqual(200);
+      expect(response.isBase64Encoded).toEqual(false);
+      const json = JSON.parse(response.body);
+      expect(json).toEqual({name: 'John', id: '123'})
+    });
+  });
+
 })
