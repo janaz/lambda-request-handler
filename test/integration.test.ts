@@ -6,13 +6,64 @@ import event from './fixtures/event.json';
 const handler = lambda(app);
 
 describe('integration', () => {
+  it('returns static file', () => {
+    const myEvent = {
+      path: "/static/file.png",
+      httpMethod: "GET",
+      headers: {},
+      queryStringParameters: {},
+      isBase64Encoded: false,
+      body: null
+    }
+    return handler(myEvent).then(response => {
+      expect(response.statusCode).toEqual(200);
+      expect(response.isBase64Encoded).toEqual(true);
+      expect(response.headers["content-type"]).toEqual('image/png');
+      expect(response.headers["content-length"]).toEqual('178');
+    });
+  });
+
+  it('returns 404 is static file is missing', () => {
+    const myEvent = {
+      path: "/static/missing.png",
+      httpMethod: "GET",
+      headers: {},
+      queryStringParameters: {},
+      isBase64Encoded: false,
+      body: null
+    }
+    return handler(myEvent).then(response => {
+      expect(response.statusCode).toEqual(404);
+      expect(response.isBase64Encoded).toEqual(false);
+      expect(response.headers["content-type"]).toEqual('text/html; charset=utf-8');
+    });
+  });
+
+  it('renders ejs template', () => {
+    const myEvent = {
+      path: "/render",
+      httpMethod: "GET",
+      headers: {},
+      queryStringParameters: {},
+      isBase64Encoded: false,
+      body: null
+    }
+    return handler(myEvent).then(response => {
+      expect(response.statusCode).toEqual(200);
+      expect(response.isBase64Encoded).toEqual(false);
+      expect(response.body).toMatch(/^<!DOCTYPE html>/);
+      expect(response.headers["content-type"]).toEqual('text/html; charset=utf-8');
+      expect(response.headers["content-length"]).toEqual('119');
+    });
+  });
+
   it('handles API GW event', () => {
     return handler(event).then(response => {
       expect(response.statusCode).toEqual(200);
       expect(response.isBase64Encoded).toEqual(false);
       expect(response.headers["content-type"]).toEqual('application/json; charset=utf-8');
       expect(response.headers["x-powered-by"]).toEqual('Express');
-      const json = JSON.parse(response.body.toString());
+      const json = JSON.parse(response.body);
       expect(json).toEqual({
         baseUrl: "",
         body: {},
