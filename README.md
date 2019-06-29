@@ -19,7 +19,7 @@ The main differences between this module and `aws-serverless-express` are
 The default export of `lambda-request-handler` is a function that takes an application handler (i.e. Express.js app instance) as an argument and returns an AWS Lambda handler function.
 
 ```sh
-npm install lambda-request-handler
+$ npm install lambda-request-handler
 ```
 
 ```javascript
@@ -35,7 +35,7 @@ app.get('/user/:id', (req, res) => {
   })
 })
 
-const handler = lambdaRequestHandler(app);
+const handler = lambdaRequestHandler(app)
 
 module.exports = { handler }
 ```
