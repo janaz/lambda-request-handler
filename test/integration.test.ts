@@ -39,6 +39,23 @@ describe('integration', () => {
     });
   });
 
+  it('handles POST requests with body', () => {
+    const myEvent = {
+      path: "/reflect",
+      httpMethod: "POST",
+      headers: {'content-type': 'application/json'},
+      queryStringParameters: {},
+      isBase64Encoded: false,
+      body: JSON.stringify({hello: 'world'})
+    }
+    return handler(myEvent).then(response => {
+      expect(response.statusCode).toEqual(200);
+      expect(response.isBase64Encoded).toEqual(false);
+      const json = JSON.parse(response.body);
+      expect(json.body).toEqual({hello: 'world'})
+    });
+  });
+
   it('renders ejs template', () => {
     const myEvent = {
       path: "/render",

@@ -17,7 +17,7 @@ app.get('/render', (_, res) => {
   res.render('page');
 });
 
-app.get('/reflect', (req, res) => {
+app.all('/reflect', (req, res) => {
   res.json({
       body: req.body,
       cookies: req.cookies,
