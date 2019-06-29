@@ -22,7 +22,7 @@ describe('eventToRequestOptions', () => {
         "CloudFront-Is-Tablet-Viewer": "false",
         "CloudFront-Viewer-Country": "AU",
         "Cookie": "s_fid=39BE527E3767FB80-174D965C9E0459D6; utag_main=v_id:016460035de500182b7d0eaa1b650307800430700093c$_sn:2$_ss:1$_st:1542333456244$ses_id:1542331656244%3Bexp-session$_pn:1%3Bexp-session",
-        "Host": "uqho4e39s9.execute-api.ap-southeast-2.amazonaws.com",
+        "Host": "apiid.execute-api.ap-southeast-2.amazonaws.com",
         "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.131 Safari/537.36",
         "Via": "2.0 cab8093de9e922f6aac9f66e51afc0cc.cloudfront.net (CloudFront)",
         "X-Amz-Cf-Id": "FSKKKFnTkJp31QMTse9jJmnI26UCUDDO_w36IsM1KhhBnh9-4m8f9g==",
