@@ -26,7 +26,7 @@ $ npm install lambda-request-handler
 const express = require('express')
 const lambdaRequestHandler = require('lambda-request-handler')
 
-cont app = express()
+const app = express()
 
 app.get('/user/:id', (req, res) => {
   res.json({
