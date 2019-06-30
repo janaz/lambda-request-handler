@@ -1638,10 +1638,10 @@ imurmurhash@^0.1.4:
   resolved "https://registry.yarnpkg.com/imurmurhash/-/imurmurhash-0.1.4.tgz#9218b9b2b928a238b13dc4fb6b6d576f231453ea"
   integrity sha1-khi5srkoojixPcT7a21XbyMUU+o=
 
-in-process-request@^0.0.2:
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/in-process-request/-/in-process-request-0.0.2.tgz#61bc2c473fddecdd7ed39531d56a9501c4f98cff"
-  integrity sha512-Haf/+G0tNvOpkQ+vcZCIDwQ773nUmGIbO11qQegkbKyzxtvkKY55gLM/5y5+xzQNyiVdO6fgLp8f3hF3o2lEqA==
+in-process-request@^0.0.3:
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/in-process-request/-/in-process-request-0.0.3.tgz#a0a36b51fd14c3f6d3e2c2f00c3a3a5831e9e6e8"
+  integrity sha512-8HWGVOv2nq/KXxNQuankCwrgFcwPQlaPpfatZPxoM3HZRLqqgDep3pMOOPQq7N5iS2U4WCW3YAhYNT0mhKZJQQ==
 
 inflight@^1.0.4:
   version "1.0.6"

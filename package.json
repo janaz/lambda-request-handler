@@ -14,7 +14,7 @@
   "types": "./dist/compile/lambda.d.ts",
   "dependencies": {
     "binary-case": "^1.1.4",
-    "in-process-request": "^0.0.2"
+    "in-process-request": "^0.0.3"
   },
   "devDependencies": {
     "@types/cookie-parser": "^1.4.1",

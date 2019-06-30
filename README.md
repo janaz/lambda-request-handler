@@ -2,7 +2,14 @@
 
 [![Build Status](https://travis-ci.org/janaz/lambda-request-handler.svg?branch=master)](https://travis-ci.org/janaz/lambda-request-handler)
 
-An npm module that allows your Express.js or Connect web applications to be deployed as an AWS Lambda function
+An npm module that allows your Node.js web applications to be deployed as an AWS Lambda function.
+
+The list of supported frameworks matches [in-process-request](https://github.com/janaz/in-process-request)
+* Express.js v3
+* Express.js v4
+* Connect v3
+* Koa v2
+
 
 Inspired by [aws-serverless-express](https://github.com/awslabs/aws-serverless-express)
 
