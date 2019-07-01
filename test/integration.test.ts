@@ -1,3 +1,4 @@
+import zlib from 'zlib';
 import app from './app';
 import lambda from '../src/lambda';
 
@@ -127,6 +128,39 @@ describe('integration', () => {
       expect(response.isBase64Encoded).toEqual(false);
       const json = JSON.parse(response.body);
       expect(json).toEqual({name: 'John', id: '123'})
+    });
+  });
+
+  it('works with compressed response', () => {
+    const myEvent = {
+      path: "/static/big.html",
+      httpMethod: "GET",
+      headers: {
+        'Accept-Encoding': 'gzip'
+      },
+      queryStringParameters: {},
+      isBase64Encoded: false,
+      body: null
+    }
+
+    const gunzip = (body: Buffer): Promise<Buffer> => new Promise((resolve, reject) => {
+      zlib.gunzip(body, (error, data) => {
+        if(error) {
+          return reject(error);
+        }
+        resolve(data);
+      });
+    });
+
+    return handler(myEvent).then(response => {
+      expect(response.statusCode).toEqual(200);
+      expect(response.headers['content-encoding']).toEqual('gzip');
+      expect(response.headers['content-type']).toEqual('text/html; charset=UTF-8');
+      expect(response.isBase64Encoded).toEqual(true);
+      return gunzip(Buffer.from(response.body, 'base64'));
+    })
+    .then(body => {
+      expect(body.toString()).toMatch(/^<!DOCTYPE html>/);
     });
   });
 

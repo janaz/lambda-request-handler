@@ -1,6 +1,7 @@
 import express from 'express';
 import path from 'path';
 import cookieParser from 'cookie-parser';
+import compression from 'compression';
 
 const app = express();
 
@@ -11,7 +12,7 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-app.use("/static", express.static(path.join(__dirname, 'public')));
+app.use("/static", compression({}), express.static(path.join(__dirname, 'public')));
 
 app.get('/render', (_, res) => {
   res.render('page');
