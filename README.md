@@ -10,7 +10,6 @@ The list of supported frameworks matches [in-process-request](https://github.com
 * Connect v3
 * Koa v2
 
-
 Inspired by [aws-serverless-express](https://github.com/awslabs/aws-serverless-express)
 
 It supports `nodejs8.10` and `nodejs10.x` execution environments.
@@ -18,6 +17,7 @@ It supports `nodejs8.10` and `nodejs10.x` execution environments.
 The main differences between this module and `aws-serverless-express` are
 * It's using [in-process-request](https://github.com/janaz/in-process-request) module to execute app handlers in-process without having to start background http server
 * Simpler setup as it doesn't require managing the internal http server
+* Support for applications that require asynchronous setup (for example reading config from network, or decrypting secrets from KMS)
 * It's faster, because it doesn't need to pass the request to the internal server through the unix socket
 * It's free from issues caused by limits in Node.js http module such as header size limit
 
@@ -49,45 +49,34 @@ module.exports = { handler }
 
 If the above file in your Lambda source was called `index.js` then the name of the handler in the Lambda configuration is `index.handler`
 
-### Advanced example
+### Advanced example with asynchronous setup
 
-Sometimes the application needs to read configuration from remote source before it can start processing requests. For example it may need to decrypt some secrets managed by KMS.
+Sometimes the application needs to read configuration from remote source before it can start processing requests. For example it may need to decrypt some secrets managed by KMS. For this use case a special helper `deferred` has been provided. It takes a factory function which returns a Promise that resolves to the app instance. The factory function will be called only once.
 
 ```javascript
 const lambdaRequestHandler = require('lambda-request-handler')
 const AWS = require('aws-sdk')
 const express = require('express')
 
-const kms = new AWS.KMS()
+const createApp = (secret) => {
+  const app = express();
+  app.get('/secret', (req, res) => {
+    res.json({
+      secret: secret,
+    })
+  })
+}
 
-const myKmsPromise = async () => {
+const myAppPromise = async () => {
+  const kms = new AWS.KMS()
   const data = await kms.decrypt({
     CiphertextBlob: Buffer.from(process.env.ENCRYPTED_SECRET, 'base64')
   }).promise()
-  process.env.SECRET = data.Plaintext.toString('ascii')
+  const secret = data.Plaintext.toString('ascii')
+  return createApp(secret);
 };
 
-const app = express()
-
-app.get('/secret', (req, res) => {
-  res.json({
-    secret: process.env.SECRET,
-  })
-})
-
-const myAppHandler = lambdaRequestHandler(app)
-
-let _myKmsPromise;
-
-const handler = async (event) => {
-  if (!_myKmsPromise) {
-    // _myKmsPromise is in global scope so that only one request to KMS is made during this Lambda lifecycle
-    _myKmsPromise = myKmsPromise();
-  }
-  await _myKmsPromise;
-  // at this point the secret is decrypted and available as process.env.SECRET to the app
-  return myAppHandler(event)
-}
+const handler = lambdaRequestHandler.deferred(myAppPromise);
 
 module.exports = { handler }
 
