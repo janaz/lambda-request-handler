@@ -1,7 +1,5 @@
 import { OutgoingHttpHeaders } from 'http';
-const binaryCase = require('binary-case');
-
-const variations = binaryCase.variations('set-cookie');
+import variations from './setCookieVariations';
 
 const fixResponseHeaders = (headers: OutgoingHttpHeaders): OutgoingHttpHeaders => {
   const retVal: OutgoingHttpHeaders = {};

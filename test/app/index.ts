@@ -18,6 +18,13 @@ app.get('/render', (_, res) => {
   res.render('page');
 });
 
+app.get('/cookies', (_, res) => {
+  res.cookie('chocolate', '10');
+  res.cookie('peanut_butter', '20');
+  res.cookie('cinnamon', '30');
+  res.end();
+});
+
 app.get('/user/:id', (req, res) => {
   res.json({name: 'John', id: req.params.id});
 });

@@ -13,7 +13,6 @@
   "main": "./dist/compile/lambda",
   "types": "./dist/compile/lambda.d.ts",
   "dependencies": {
-    "binary-case": "^1.1.4",
     "in-process-request": "^0.0.4"
   },
   "devDependencies": {

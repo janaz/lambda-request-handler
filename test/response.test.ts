@@ -1,7 +1,6 @@
 import { inProcessResponseToApiGatewayResponse, errorResponse} from '../src/response';
 import { InProcessResponse } from 'in-process-request';
 
-
 describe('inProcessResponseToApiGatewayResponse', () => {
   const generateMockResponse = (isUTF8: boolean = true): InProcessResponse => ({
     body: Buffer.from('hello'),

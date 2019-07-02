@@ -24,6 +24,24 @@ describe('integration', () => {
     });
   });
 
+  it('returns set-cookie header with different case', () => {
+    const myEvent = {
+      path: "/cookies",
+      httpMethod: "GET",
+      headers: {},
+      queryStringParameters: {},
+      isBase64Encoded: false,
+      body: null
+    }
+    return handler(myEvent).then(response => {
+      expect(response.headers).toEqual(expect.objectContaining({
+        'set-cookie': 'chocolate=10; Path=/',
+        'Set-cookie': 'peanut_butter=20; Path=/',
+        'sEt-cookie': 'cinnamon=30; Path=/',
+      }));
+    });
+  });
+
   it('returns 404 is static file is missing', () => {
     const myEvent = {
       path: "/static/missing.png",
