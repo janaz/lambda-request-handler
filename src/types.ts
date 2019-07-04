@@ -19,8 +19,21 @@ export interface APIGatewayEvent {
   }
 }
 
+export interface LoadBalancerEvent {
+  path: string,
+  queryStringParameters: StringMap<string> | null,
+  body: string | null | undefined,
+  headers: IncomingHttpHeaders,
+  isBase64Encoded: boolean,
+  httpMethod: string,
+  requestContext?: {
+    elb: {
+      targetGroupArn: string,
+    },
+  }
+}
+
 export interface LambdaResponseHeaders {
-  headers: StringMap<string>
   multiValueHeaders: StringMap<string[]>
 }
 

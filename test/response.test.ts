@@ -1,7 +1,7 @@
-import { inProcessResponseToApiGatewayResponse, errorResponse} from '../src/response';
+import { inProcessResponseToLambdaResponse, errorResponse} from '../src/response';
 import { InProcessResponse } from 'in-process-request';
 
-describe('inProcessResponseToApiGatewayResponse', () => {
+describe('inProcessResponseToLambdaResponse', () => {
   const generateMockResponse = (isUTF8: boolean = true): InProcessResponse => ({
     body: Buffer.from('hello'),
     headers: {
@@ -13,36 +13,36 @@ describe('inProcessResponseToApiGatewayResponse', () => {
   });
 
   it('returns 200', () => {
-    const res = inProcessResponseToApiGatewayResponse(generateMockResponse());
+    const res = inProcessResponseToLambdaResponse(generateMockResponse());
     expect(res.statusCode).toEqual(200);
   })
 
   it('has plain text body', () => {
-    const res = inProcessResponseToApiGatewayResponse(generateMockResponse());
+    const res = inProcessResponseToLambdaResponse(generateMockResponse());
     expect(res.body).toEqual('hello');
   })
 
   it('is not base64 encoded', () => {
-    const res = inProcessResponseToApiGatewayResponse(generateMockResponse());
+    const res = inProcessResponseToLambdaResponse(generateMockResponse());
     expect(res.isBase64Encoded).toEqual(false);
   })
 
   it('has headers', () => {
-    const res = inProcessResponseToApiGatewayResponse(generateMockResponse());
-    expect(res.headers).toEqual({
-      'content-type': 'text/plain',
-      'x-custom': '10',
+    const res = inProcessResponseToLambdaResponse(generateMockResponse());
+    expect(res.multiValueHeaders).toEqual({
+      'content-type': ['text/plain'],
+      'x-custom': ['10'],
     });
   })
 
   describe('when the body is not utf8', () => {
     it('has base64 body', () => {
-      const res = inProcessResponseToApiGatewayResponse(generateMockResponse(false));
+      const res = inProcessResponseToLambdaResponse(generateMockResponse(false));
       expect(res.body).toEqual('aGVsbG8=');
     })
 
     it('is not base64 encoded', () => {
-      const res = inProcessResponseToApiGatewayResponse(generateMockResponse(false));
+      const res = inProcessResponseToLambdaResponse(generateMockResponse(false));
       expect(res.isBase64Encoded).toEqual(true);
     })
 
@@ -55,7 +55,7 @@ describe('errorResponse', () => {
     expect(errorResponse().statusCode).toEqual(500);
   })
   it('has no headers', () => {
-    expect(errorResponse().headers).toEqual({});
+    expect(errorResponse().multiValueHeaders).toEqual({});
   })
   it('has no body', () => {
     expect(errorResponse().body).toEqual('');

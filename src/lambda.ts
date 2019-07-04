@@ -2,12 +2,13 @@ import { RequestListener } from 'http';
 import inProcessRequestHandler from 'in-process-request';
 import * as apigw from './types';
 import eventToRequestOptions from './eventToRequestOptions'
-import { inProcessResponseToApiGatewayResponse, errorResponse } from './response';
+import { inProcessResponseToLambdaResponse, errorResponse } from './response';
 
 declare namespace handler {
   type APIGatewayEvent = apigw.APIGatewayEvent;
-  type APIGatewayResponse = apigw.APIGatewayResponse;
-  type APIGatewayEventHandler = (event: handler.APIGatewayEvent) => Promise<handler.APIGatewayResponse>
+  type APIGatewayResponse = apigw.LambdaResponse;
+  type LambdaResponse = apigw.LambdaResponse;
+  type APIGatewayEventHandler = (event: handler.APIGatewayEvent) => Promise<handler.LambdaResponse>
 };
 
 const handlerPromise = (appPromiseFn: () => Promise<RequestListener>): handler.APIGatewayEventHandler => {
@@ -22,7 +23,7 @@ const handlerPromise = (appPromiseFn: () => Promise<RequestListener>): handler.A
         const appHandler = inProcessRequestHandler(app);
         return appHandler(reqOptions);
       })
-      .then(inProcessResponseToApiGatewayResponse)
+      .then(inProcessResponseToLambdaResponse)
       .catch(e => {
         console.error(e);
         return errorResponse();

@@ -1,8 +1,8 @@
 import { InProcessResponse } from 'in-process-request';
-import { APIGatewayResponse} from './types';
+import { LambdaResponse } from './types';
 import fixResponseHeaders from './fixResponseHeaders'
 
-export const inProcessResponseToApiGatewayResponse = (response: InProcessResponse): APIGatewayResponse => {
+export const inProcessResponseToLambdaResponse = (response: InProcessResponse): LambdaResponse => {
   const encoding = response.isUTF8 ? 'utf8' : 'base64';
   return {
     statusCode: response.statusCode,
@@ -12,10 +12,9 @@ export const inProcessResponseToApiGatewayResponse = (response: InProcessRespons
   };
 };
 
-export const errorResponse = (): APIGatewayResponse => {
+export const errorResponse = (): LambdaResponse => {
   return {
     statusCode: 500,
-    headers: {},
     multiValueHeaders: {},
     body: '',
     isBase64Encoded: false

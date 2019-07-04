@@ -22,8 +22,8 @@ describe('integration for deferred app', () => {
     return handler(myEvent).then(response => {
       expect(response.statusCode).toEqual(200);
       expect(response.isBase64Encoded).toEqual(true);
-      expect(response.headers["content-type"]).toEqual('image/png');
-      expect(response.headers["content-length"]).toEqual('178');
+      expect(response.multiValueHeaders["content-type"][0]).toEqual('image/png');
+      expect(response.multiValueHeaders["content-length"][0]).toEqual('178');
     });
   });
 

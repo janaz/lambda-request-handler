@@ -19,8 +19,8 @@ describe('integration', () => {
     return handler(myEvent).then(response => {
       expect(response.statusCode).toEqual(200);
       expect(response.isBase64Encoded).toEqual(true);
-      expect(response.headers["content-type"]).toEqual('image/png');
-      expect(response.headers["content-length"]).toEqual('178');
+      expect(response.multiValueHeaders["content-type"][0]).toEqual('image/png');
+      expect(response.multiValueHeaders["content-length"][0]).toEqual('178');
     });
   });
 
@@ -34,13 +34,13 @@ describe('integration', () => {
       body: null
     }
     return handler(myEvent).then(response => {
-      expect(response.multiValueHeaders).toEqual({
+      expect(response.multiValueHeaders).toEqual(expect.objectContaining({
         'set-cookie': [
           'chocolate=10; Path=/',
           'peanut_butter=20; Path=/',
           'cinnamon=30; Path=/',
         ]
-      });
+      }));
     });
   });
 
@@ -56,7 +56,7 @@ describe('integration', () => {
     return handler(myEvent).then(response => {
       expect(response.statusCode).toEqual(404);
       expect(response.isBase64Encoded).toEqual(false);
-      expect(response.headers["content-type"]).toEqual('text/html; charset=utf-8');
+      expect(response.multiValueHeaders["content-type"][0]).toEqual('text/html; charset=utf-8');
     });
   });
 
@@ -90,8 +90,8 @@ describe('integration', () => {
       expect(response.statusCode).toEqual(200);
       expect(response.isBase64Encoded).toEqual(false);
       expect(response.body).toMatch(/^<!DOCTYPE html>/);
-      expect(response.headers["content-type"]).toEqual('text/html; charset=utf-8');
-      expect(response.headers["content-length"]).toEqual('119');
+      expect(response.multiValueHeaders["content-type"][0]).toEqual('text/html; charset=utf-8');
+      expect(response.multiValueHeaders["content-length"][0]).toEqual('119');
     });
   });
 
@@ -99,8 +99,8 @@ describe('integration', () => {
     return handler(event).then(response => {
       expect(response.statusCode).toEqual(200);
       expect(response.isBase64Encoded).toEqual(false);
-      expect(response.headers["content-type"]).toEqual('application/json; charset=utf-8');
-      expect(response.headers["x-powered-by"]).toEqual('Express');
+      expect(response.multiValueHeaders["content-type"][0]).toEqual('application/json; charset=utf-8');
+      expect(response.multiValueHeaders["x-powered-by"][0]).toEqual('Express');
       const json = JSON.parse(response.body);
       expect(json).toEqual({
         baseUrl: "",
@@ -174,8 +174,8 @@ describe('integration', () => {
 
     return handler(myEvent).then(response => {
       expect(response.statusCode).toEqual(200);
-      expect(response.headers['content-encoding']).toEqual('gzip');
-      expect(response.headers['content-type']).toEqual('text/html; charset=UTF-8');
+      expect(response.multiValueHeaders['content-encoding'][0]).toEqual('gzip');
+      expect(response.multiValueHeaders['content-type'][0]).toEqual('text/html; charset=UTF-8');
       expect(response.isBase64Encoded).toEqual(true);
       return gunzip(Buffer.from(response.body, 'base64'));
     })

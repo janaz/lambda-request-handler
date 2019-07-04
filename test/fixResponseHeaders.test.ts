@@ -1,18 +1,18 @@
 import fixResponseHeaders from '../src/fixResponseHeaders';
 
 describe('fixResponseHeaders', () => {
-  describe('content-encoding header', () => {
+  describe('transfer-encoding header', () => {
     it('is removed when the value is "chunked"', () => {
       const fixed = fixResponseHeaders({
         "transfer-encoding": "chunked",
       })
-      expect(fixed.headers['transfer-encoding']).toBeUndefined();
+      expect(fixed.multiValueHeaders['transfer-encoding']).toBeUndefined();
     })
     it('is not removed when the value is not "chunked"', () => {
       const fixed = fixResponseHeaders({
-        "transfer-encoding": "not-chunked",
+        "transfer-encoding": ["not-chunked", "chunked"]
       })
-      expect(fixed.headers['transfer-encoding']).toEqual('not-chunked');
+      expect(fixed.multiValueHeaders['transfer-encoding']).toEqual(['not-chunked']);
     })
   });
 
@@ -31,7 +31,7 @@ describe('fixResponseHeaders', () => {
     const fixed = fixResponseHeaders({
       "content-length": "100",
     })
-    expect(fixed.headers['content-length']).toEqual('100');
+    expect(fixed.multiValueHeaders['content-length']).toEqual(['100']);
   })
 
 })
