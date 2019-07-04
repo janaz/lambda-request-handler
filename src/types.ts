@@ -12,24 +12,14 @@ export interface APIGatewayEvent {
   isBase64Encoded: boolean,
   httpMethod: string,
   requestContext?: {
+    elb?: {
+      targetGroupArn: string,
+    },
+    stage?: string,
     identity?: {
       sourceIp: string,
     },
     [k: string]: any
-  }
-}
-
-export interface LoadBalancerEvent {
-  path: string,
-  queryStringParameters: StringMap<string> | null,
-  body: string | null | undefined,
-  headers: IncomingHttpHeaders,
-  isBase64Encoded: boolean,
-  httpMethod: string,
-  requestContext?: {
-    elb: {
-      targetGroupArn: string,
-    },
   }
 }
 

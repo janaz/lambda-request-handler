@@ -37,17 +37,79 @@ describe('eventToRequestOptions', () => {
     })
   })
 
-  it('converts Api Gateway health check event to RequestOptions object', () => {
-    const reqOpts = eventToRequestOptions(eventHealth);
-    expect(reqOpts).toEqual({
-      "method": "HEAD",
-      "path": "/",
-      "remoteAddress": undefined,
-      "body": Buffer.alloc(0),
-      "ssl": true,
-      "headers":  {
-        "user-agent": "ELB-HealthChecker/2.0",
-      },
+  describe('ALB', () => {
+    it('sets remote ip address based on x-forwarded headers', () => {
+      const reqOpts = eventToRequestOptions({
+        path: '/',
+        httpMethod: 'HEAD',
+        body: null,
+        headers: {
+          "x-forwarded-for": "10.10.2.3 129.45.45.48",
+          "x-forwarded-proto": "http",
+        },
+        queryStringParameters: {},
+        isBase64Encoded: false,
+        requestContext: {
+          elb: {
+            targetGroupArn: 'arn'
+          }
+        }
+      });
+      expect(reqOpts).toEqual({
+        "method": "HEAD",
+        "path": "/",
+        "remoteAddress": '129.45.45.48',
+        "body": Buffer.alloc(0),
+        "ssl": false,
+        "headers":  {
+          "x-forwarded-for": "10.10.2.3",
+          "x-forwarded-proto": "http",
+        },
+      })
+    })
+
+    it('removes x-forwarded headers if there is just one ip in the chain', () => {
+      const reqOpts = eventToRequestOptions({
+        path: '/',
+        httpMethod: 'HEAD',
+        body: null,
+        headers: {
+          "x-forwarded-for": "129.45.45.48",
+          "x-forwarded-proto": "https",
+          "x-forwarded-port": "443",
+        },
+        queryStringParameters: {},
+        isBase64Encoded: true,
+        requestContext: {
+          elb: {
+            targetGroupArn: 'arn'
+          }
+        }
+      });
+
+      expect(reqOpts).toEqual({
+        "method": "HEAD",
+        "path": "/",
+        "remoteAddress": '129.45.45.48',
+        "body": Buffer.alloc(0),
+        "ssl": true,
+        "headers":  {
+        },
+      })
+    });
+
+    it('converts ELB health check event to RequestOptions object', () => {
+      const reqOpts = eventToRequestOptions(eventHealth);
+      expect(reqOpts).toEqual({
+        "method": "HEAD",
+        "path": "/",
+        "remoteAddress": undefined,
+        "body": Buffer.alloc(0),
+        "ssl": false,
+        "headers":  {
+          "user-agent": "ELB-HealthChecker/2.0",
+        },
+      })
     })
   })
 
