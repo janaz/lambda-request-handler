@@ -1,8 +1,8 @@
 # lambda-request-handler
 
-[![Build Status](https://travis-ci.org/janaz/lambda-request-handler.svg?branch=master)](https://travis-ci.org/janaz/lambda-request-handler)
-
 An npm module that allows your Node.js web applications to be deployed as an AWS Lambda function.
+
+[![Build Status](https://travis-ci.org/janaz/lambda-request-handler.svg?branch=master)](https://travis-ci.org/janaz/lambda-request-handler)
 
 The list of supported frameworks matches [in-process-request](https://github.com/janaz/in-process-request)
 * Express.js v3
