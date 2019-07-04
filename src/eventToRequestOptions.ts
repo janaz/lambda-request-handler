@@ -1,7 +1,7 @@
 import * as url from 'url';
 
 import { InProcessRequestOptions } from 'in-process-request';
-import { APIGatewayEvent } from './apiGateway';
+import { APIGatewayEvent } from './types';
 
 const eventToRequestOptions = (event: APIGatewayEvent): InProcessRequestOptions => {
   return {

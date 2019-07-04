@@ -1,23 +1,19 @@
 import { OutgoingHttpHeaders } from 'http';
-import variations from './setCookieVariations';
+import { LambdaResponseHeaders } from './types'
 
-const fixResponseHeaders = (headers: OutgoingHttpHeaders): OutgoingHttpHeaders => {
-  const retVal: OutgoingHttpHeaders = {};
+const fixResponseHeaders = (headers: OutgoingHttpHeaders): LambdaResponseHeaders => {
+  const retVal: LambdaResponseHeaders = {
+    headers: {},
+    multiValueHeaders: {},
+  }
   Object.keys(headers).forEach(k => {
     if (k === 'transfer-encoding' && headers[k] === 'chunked') {
       return;
     }
     if (Array.isArray(headers[k])) {
-      const arrayValue = headers[k] as string[];
-      if (k === 'set-cookie') {
-        arrayValue.forEach((value, i) => {
-          retVal[variations[i]] = value
-        });
-      } else {
-        retVal[k] = arrayValue.join(',');
-      }
+      retVal.multiValueHeaders[k] = headers[k] as string[];
     } else {
-      retVal[k] = headers[k];
+      retVal.headers[k] = (headers[k] as string).toString();
     }
   })
   return retVal;

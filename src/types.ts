@@ -1,12 +1,12 @@
-import { IncomingHttpHeaders, OutgoingHttpHeaders } from 'http';
+import { IncomingHttpHeaders } from 'http';
 
-interface StringMap {
-  [k: string]: string
+export interface StringMap<T> {
+  [k: string]: T
 }
 
 export interface APIGatewayEvent {
   path: string,
-  queryStringParameters: StringMap | null,
+  queryStringParameters: StringMap<string> | null,
   body: string | null | undefined,
   headers: IncomingHttpHeaders,
   isBase64Encoded: boolean,
@@ -19,9 +19,13 @@ export interface APIGatewayEvent {
   }
 }
 
-export interface APIGatewayResponse {
+export interface LambdaResponseHeaders {
+  headers: StringMap<string>
+  multiValueHeaders: StringMap<string[]>
+}
+
+export interface LambdaResponse extends LambdaResponseHeaders {
   statusCode: number,
-  headers: OutgoingHttpHeaders,
   body: string,
   isBase64Encoded: boolean
 }

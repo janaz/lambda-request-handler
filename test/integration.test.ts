@@ -24,7 +24,7 @@ describe('integration', () => {
     });
   });
 
-  it('returns set-cookie header with different case', () => {
+  it('returns set-cookie header as multi-value', () => {
     const myEvent = {
       path: "/cookies",
       httpMethod: "GET",
@@ -34,11 +34,13 @@ describe('integration', () => {
       body: null
     }
     return handler(myEvent).then(response => {
-      expect(response.headers).toEqual(expect.objectContaining({
-        'set-cookie': 'chocolate=10; Path=/',
-        'Set-cookie': 'peanut_butter=20; Path=/',
-        'sEt-cookie': 'cinnamon=30; Path=/',
-      }));
+      expect(response.multiValueHeaders).toEqual({
+        'set-cookie': [
+          'chocolate=10; Path=/',
+          'peanut_butter=20; Path=/',
+          'cinnamon=30; Path=/',
+        ]
+      });
     });
   });
 

@@ -1,6 +1,6 @@
 import { RequestListener } from 'http';
 import inProcessRequestHandler from 'in-process-request';
-import * as apigw from './apiGateway';
+import * as apigw from './types';
 import eventToRequestOptions from './eventToRequestOptions'
 import { inProcessResponseToApiGatewayResponse, errorResponse } from './response';
 
