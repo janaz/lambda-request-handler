@@ -1,18 +1,18 @@
 import fixResponseHeaders from '../src/fixResponseHeaders';
 
-describe('fixResponseHeaders', () => {
+describe('fixResponseHeaders - multi', () => {
   describe('transfer-encoding header', () => {
     it('is removed when the value is "chunked"', () => {
       const fixed = fixResponseHeaders({
         "transfer-encoding": "chunked",
-      })
-      expect(fixed.multiValueHeaders['transfer-encoding']).toBeUndefined();
+      }, true)
+      expect(fixed.multiValueHeaders!['transfer-encoding']).toBeUndefined();
     })
     it('is not removed when the value is not "chunked"', () => {
       const fixed = fixResponseHeaders({
         "transfer-encoding": ["not-chunked", "chunked"]
-      })
-      expect(fixed.multiValueHeaders['transfer-encoding']).toEqual(['not-chunked']);
+      }, true)
+      expect(fixed.multiValueHeaders!['transfer-encoding']).toEqual(['not-chunked']);
     })
   });
 
@@ -20,8 +20,8 @@ describe('fixResponseHeaders', () => {
     it('returns multiple headers with different case', () => {
       const fixed = fixResponseHeaders({
         "set-cookie": ["a", "b", "c"],
-      })
-      expect(fixed.multiValueHeaders).toEqual({
+      }, true)
+      expect(fixed.multiValueHeaders!).toEqual({
         "set-cookie": ["a", "b", "c"],
       });
     })
@@ -30,8 +30,43 @@ describe('fixResponseHeaders', () => {
   it('by default it copies the value', () => {
     const fixed = fixResponseHeaders({
       "content-length": "100",
+    }, true)
+    expect(fixed.multiValueHeaders!['content-length']).toEqual(['100']);
+  })
+})
+
+describe('fixResponseHeaders - single', () => {
+  describe('transfer-encoding header', () => {
+    it('is removed when the value is "chunked"', () => {
+      const fixed = fixResponseHeaders({
+        "transfer-encoding": "chunked",
+      }, false)
+      expect(fixed.headers!['transfer-encoding']).toBeUndefined();
     })
-    expect(fixed.multiValueHeaders['content-length']).toEqual(['100']);
+    it('is not removed when the value is not "chunked"', () => {
+      const fixed = fixResponseHeaders({
+        "transfer-encoding": "not-chunked"
+      }, false)
+      expect(fixed.headers!['transfer-encoding']).toEqual('not-chunked');
+    })
+  });
+
+  describe('array header values', () => {
+    it('returns single header with the last value', () => {
+      const fixed = fixResponseHeaders({
+        "set-cookie": ["a", "b", "c"],
+      }, false)
+      expect(fixed.headers!).toEqual({
+        "set-cookie": "c",
+      });
+    })
+  });
+
+  it('by default it copies the value', () => {
+    const fixed = fixResponseHeaders({
+      "content-length": "100",
+    }, false)
+    expect(fixed.headers!['content-length']).toEqual('100');
   })
 
 })

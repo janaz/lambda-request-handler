@@ -14,7 +14,7 @@ describe('integration for deferred app', () => {
     const myEvent = {
       path: "/static/file.png",
       httpMethod: "GET",
-      headers: {},
+      multiValueHeaders: {},
       queryStringParameters: {},
       isBase64Encoded: false,
       body: null
@@ -22,8 +22,8 @@ describe('integration for deferred app', () => {
     return handler(myEvent).then(response => {
       expect(response.statusCode).toEqual(200);
       expect(response.isBase64Encoded).toEqual(true);
-      expect(response.multiValueHeaders["content-type"][0]).toEqual('image/png');
-      expect(response.multiValueHeaders["content-length"][0]).toEqual('178');
+      expect(response.multiValueHeaders!["content-type"][0]).toEqual('image/png');
+      expect(response.multiValueHeaders!["content-length"][0]).toEqual('178');
     });
   });
 
@@ -31,7 +31,7 @@ describe('integration for deferred app', () => {
     const myEvent = {
       path: "/static/file.png",
       httpMethod: "GET",
-      headers: {},
+      multiValueHeaders: {},
       queryStringParameters: {},
       isBase64Encoded: false,
       body: null

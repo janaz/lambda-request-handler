@@ -1,26 +1,36 @@
 import { OutgoingHttpHeaders } from 'http';
-import { LambdaResponseHeaders } from './types'
+import { LambdaResponseHeaders, StringMap } from './types'
 
-const fixResponseHeaders = (headers: OutgoingHttpHeaders): LambdaResponseHeaders => {
-  const retVal: LambdaResponseHeaders = {
-    multiValueHeaders: {},
-  }
+const fixResponseHeaders = (headers: OutgoingHttpHeaders, supportMultiHeaders: boolean): LambdaResponseHeaders => {
+  const multiValueHeaders: StringMap<string[]> = {};
+  const singleValueHeaders: StringMap<string> = {};
   Object.keys(headers).forEach(k => {
     if (Array.isArray(headers[k])) {
-      retVal.multiValueHeaders[k] = headers[k] as string[];
+      const values = headers[k] as string[];
+      singleValueHeaders[k] = values[values.length - 1]
+      multiValueHeaders[k] = values;
     } else {
-      retVal.multiValueHeaders[k] = [(headers[k] as string).toString()];
+      const value = (headers[k] as string).toString();
+      multiValueHeaders[k] = [value];
+      singleValueHeaders[k] = value;
     }
   });
-  if (retVal.multiValueHeaders['transfer-encoding']) {
-    const filtered = retVal.multiValueHeaders['transfer-encoding'].filter(v => v !== 'chunked');
+  if (singleValueHeaders['transfer-encoding'] === 'chunked') {
+    delete singleValueHeaders['transfer-encoding'];
+  }
+  if (multiValueHeaders['transfer-encoding']) {
+    const filtered = multiValueHeaders['transfer-encoding'].filter(v => v !== 'chunked');
     if (filtered.length > 0) {
-      retVal.multiValueHeaders['transfer-encoding'] = filtered;
+      multiValueHeaders['transfer-encoding'] = filtered;
     } else {
-      delete retVal.multiValueHeaders['transfer-encoding']
+      delete multiValueHeaders['transfer-encoding']
     }
   }
-  return retVal;
+  if (supportMultiHeaders) {
+    return { multiValueHeaders };
+  } else {
+    return { headers: singleValueHeaders }
+  }
 };
 
 export default fixResponseHeaders;

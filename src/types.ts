@@ -1,14 +1,14 @@
-import { IncomingHttpHeaders } from 'http';
-
 export interface StringMap<T> {
   [k: string]: T
 }
 
 export interface APIGatewayEvent {
   path: string,
-  queryStringParameters: StringMap<string> | null,
+  queryStringParameters?: StringMap<string> | null | undefined,
+  multiValueQueryStringParameters?: StringMap<string[]> | null | undefined,
   body: string | null | undefined,
-  headers: IncomingHttpHeaders,
+  headers?: StringMap<string> | null | undefined,
+  multiValueHeaders?: StringMap<string[]> | null | undefined,
   isBase64Encoded: boolean,
   httpMethod: string,
   requestContext?: {
@@ -24,7 +24,8 @@ export interface APIGatewayEvent {
 }
 
 export interface LambdaResponseHeaders {
-  multiValueHeaders: StringMap<string[]>
+  headers?: StringMap<string> | undefined
+  multiValueHeaders?: StringMap<string[]> | undefined
 }
 
 export interface LambdaResponse extends LambdaResponseHeaders {
