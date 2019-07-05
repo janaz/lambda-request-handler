@@ -23,15 +23,18 @@ const handlerPromise = (appPromiseFn: () => Promise<RequestListener>): handler.A
     }
     return _p
       .then(app => {
-        const reqOptions = eventToRequestOptions(event);
-        const appHandler = inProcessRequestHandler(app);
-        return appHandler(reqOptions);
+        return Promise.resolve()
+          .then(() => {
+            const reqOptions = eventToRequestOptions(event);
+            const appHandler = inProcessRequestHandler(app);
+            return appHandler(reqOptions)
+          })
+          .then(res => inProcessResponseToLambdaResponse(res, eventWithMultiValueHeaders(event)))
+          .catch(e => {
+            console.error(e);
+            return errorResponse();
+          });
       })
-      .then(res => inProcessResponseToLambdaResponse(res, eventWithMultiValueHeaders(event)))
-      .catch(e => {
-        console.error(e);
-        return errorResponse();
-      });
     }
 }
 

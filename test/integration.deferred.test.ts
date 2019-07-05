@@ -44,4 +44,44 @@ describe('integration for deferred app', () => {
         expect(__test).toEqual(1);
       });
   });
+
+  it('handler returns rejected promise if app cannot be initialized', () => {
+    const failingHandler = lambda.deferred(() => Promise.reject(new Error('failed to initialize app')));
+    const myEvent = {
+      path: "/static/file.png",
+      httpMethod: "GET",
+      multiValueHeaders: {},
+      queryStringParameters: {},
+      isBase64Encoded: false,
+      body: null
+    }
+    return failingHandler(myEvent)
+      .then(
+        () => Promise.reject(new Error('should have failed')),
+        e => {
+          expect(e.message).toEqual('failed to initialize app')
+      })
+  })
+
+  it('returns 500 if there is a problem with the request', () => {
+    const failingApp = lambda.deferred(() => Promise.resolve(() => {throw new Error('failed')}));
+    const myEvent = {
+      path: "/static/file.png",
+      httpMethod: "GET",
+      multiValueHeaders: {},
+      queryStringParameters: {},
+      isBase64Encoded: false,
+      body: null
+    }
+    return failingApp(myEvent)
+      .then((res) => {
+        expect(res).toEqual({
+          body: "",
+          isBase64Encoded: false,
+          multiValueHeaders: {},
+          statusCode: 500,
+        })
+      });
+  })
+
 })
