@@ -21,7 +21,10 @@
     "connect",
     "http",
     "request",
-    "response"
+    "response",
+    "api-gateway",
+    "alb",
+    "application-load-balancer"
   ],
   "main": "./dist/compile/lambda",
   "types": "./dist/compile/lambda.d.ts",
