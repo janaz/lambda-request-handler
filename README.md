@@ -1,6 +1,6 @@
 # lambda-request-handler
 
-An npm module that allows your Node.js web applications to be deployed as an AWS Lambda function.
+An npm module that allows your Node.js web applications to be deployed as an AWS Lambda function and invoked in response to API Gateway or Application Load Balancer requests.
 
 [![Build Status](https://travis-ci.org/janaz/lambda-request-handler.svg?branch=master)](https://travis-ci.org/janaz/lambda-request-handler)
 
@@ -20,6 +20,10 @@ The main differences between this module and `aws-serverless-express` are
 * Support for applications that require asynchronous setup (for example reading config from network, or decrypting secrets from KMS)
 * It's faster, because it doesn't need to pass the request to the internal server through the unix socket
 * It's free from issues caused by limits in Node.js http module such as header size limit
+
+The handler supports events from the following sources:
+- API Gateway
+- Application Load Balancer
 
 ## Usage
 
