@@ -5,7 +5,7 @@
   "scripts": {
     "precompile": "rm -rf dist",
     "compile": "tsc",
-    "test": "jest"
+    "test": "jest --coverage"
   },
   "files": [
     "/dist"

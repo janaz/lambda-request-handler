@@ -52,12 +52,22 @@ describe('fixResponseHeaders - single', () => {
   });
 
   describe('array header values', () => {
-    it('returns single header with the last value', () => {
+    it('sets set-cookie header using different character case', () => {
       const fixed = fixResponseHeaders({
         "set-cookie": ["a", "b", "c"],
       }, false)
-      expect(fixed.headers!).toEqual({
-        "set-cookie": "c",
+      expect(fixed.headers).toEqual({
+        "set-cookie": "a",
+        "Set-cookie": "b",
+        "sEt-cookie": "c",
+      });
+    })
+    it('joins the values with commas for not set-cookie headers', () => {
+      const fixed = fixResponseHeaders({
+        "x-header": ["a", "b", "c"],
+      }, false)
+      expect(fixed.headers).toEqual({
+        "x-header": "a,b,c",
       });
     })
   });
