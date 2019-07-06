@@ -195,12 +195,6 @@ describe('integration', () => {
     });
   });
 
-  it('sets x-aws-lambda-request-id header with context request id', () => {
-    return handler(event, {awsRequestId: 'req-id'}).then(response => {
-      expect(response.multiValueHeaders!['x-aws-lambda-request-id']).toEqual('req-id');
-    });
-  });
-
   it('works with compressed response', () => {
     const myEvent = {
       path: "/static/big.html",

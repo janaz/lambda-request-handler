@@ -82,6 +82,11 @@ describe('eventToRequestOptions', () => {
     })
   })
 
+  it('sets x-aws-lambda-request-id header with context request id', () => {
+    const reqOpts =  eventToRequestOptions(event, {awsRequestId: 'req-id'});
+    expect(reqOpts.headers!['x-aws-lambda-request-id']).toEqual('req-id');
+  });
+
   describe('ALB', () => {
     it('sets remote ip address based on x-forwarded headers', () => {
       const reqOpts = eventToRequestOptions({
