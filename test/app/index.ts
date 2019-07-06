@@ -29,7 +29,7 @@ app.get('/user/:id', (req, res) => {
   res.json({name: 'John', id: req.params.id});
 });
 
-app.all('/reflect', (req, res) => {
+app.all(['/reflect', '/inspect'], (req, res) => {
   res.json({
       body: req.body,
       cookies: req.cookies,

@@ -2,14 +2,16 @@ import eventToRequestOptions from '../src/eventToRequestOptions';
 
 import event from './fixtures/event.json';
 import eventHealth from './fixtures/health-event.json';
+import eventAlb from './fixtures/alb-event.json';
+import evenMultiHeadertAlb from './fixtures/alb-multi-header-event.json';
 
 describe('eventToRequestOptions', () => {
   it('converts Api Gateway event to RequestOptions object', () => {
     const reqOpts = eventToRequestOptions(event);
     expect(reqOpts).toEqual({
       "method": "GET",
-      "path": "/reflect",
-      "remoteAddress": "203.13.23.10",
+      "path": "/inspect?param=ab%20cd",
+      "remoteAddress": "1.152.111.246",
       "body": Buffer.alloc(0),
       "ssl": true,
       "headers":  {
@@ -21,17 +23,60 @@ describe('eventToRequestOptions', () => {
         "cloudfront-is-smarttv-viewer": "false",
         "cloudfront-is-tablet-viewer": "false",
         "cloudfront-viewer-country": "AU",
-        "cookie": "s_fid=39BE527E3767FB80-174D965C9E0459D6; utag_main=v_id:016460035de500182b7d0eaa1b650307800430700093c$_sn:2$_ss:1$_st:1542333456244$ses_id:1542331656244%3Bexp-session$_pn:1%3Bexp-session",
+        "cookie": "cookie1=value1; cookie2=value2; cookie3=value3",
         "host": "apiid.execute-api.ap-southeast-2.amazonaws.com",
-        "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.131 Safari/537.36",
-        "via": "2.0 cab8093de9e922f6aac9f66e51afc0cc.cloudfront.net (CloudFront)",
-        "x-amz-cf-id": "FSKKKFnTkJp31QMTse9jJmnI26UCUDDO_w36IsM1KhhBnh9-4m8f9g==",
-        "x-amzn-trace-id": "Root=1-5cd52046-cc5dd96e659172ee28e86d1a",
-        "x-forwarded-for": "203.13.23.10, 70.132.29.78",
+        "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36",
+        "via": "2.0 6e1c2492999626e81fa810e92ced9820.cloudfront.net (CloudFront)",
+        "x-amz-cf-id": "j3GdPs-yyyEN6QS5_2q8exw-bmECfwKBw-9j3bJ3u1A69j1OlZZAJA==",
+        "x-amzn-trace-id": "Root=1-5d2093d3-80c981c4f1d40448d2cb9c28",
+        "x-forwarded-for": "1.152.111.246, 54.239.202.85",
         "x-forwarded-port": "443",
         "x-forwarded-proto": "https",
         "accept-encoding": "gzip, deflate, br",
-        "cache-control": "max-age=0",
+        "upgrade-insecure-requests": "1",
+      },
+    })
+  })
+
+  it('converts ALB single header value event to RequestOptions object', () => {
+    const reqOpts = eventToRequestOptions(eventAlb);
+    expect(reqOpts).toEqual({
+      "method": "GET",
+      "path": "/inspect?param=ab%20cd",
+      "remoteAddress": "1.136.104.131",
+      "body": Buffer.alloc(0),
+      "ssl": false,
+      "headers":  {
+        "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3",
+        "accept-language": "en-US,en;q=0.9,pl-PL;q=0.8,pl;q=0.7,ru;q=0.6",
+        "cookie": "cookie3=value3; cookie2=value2; cookie1=value1",
+        "connection": "keep-alive",
+        "host": "elbname-234234234234.ap-southeast-2.elb.amazonaws.com",
+        "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36",
+        "x-amzn-trace-id": "Root=1-5d208beb-7e237639e7d36c48e22f58c7",
+        "accept-encoding": "gzip, deflate",
+        "upgrade-insecure-requests": "1",
+      },
+    })
+  })
+
+  it('converts ALB multi header value event to RequestOptions object', () => {
+    const reqOpts = eventToRequestOptions(evenMultiHeadertAlb);
+    expect(reqOpts).toEqual({
+      "method": "GET",
+      "path": "/inspect?param=ab%20cd",
+      "remoteAddress": "1.136.104.131",
+      "body": Buffer.alloc(0),
+      "ssl": false,
+      "headers":  {
+        "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3",
+        "accept-language": "en-US,en;q=0.9,pl-PL;q=0.8,pl;q=0.7,ru;q=0.6",
+        "cookie": "cookie3=value3; cookie2=value2; cookie1=value1",
+        "connection": "keep-alive",
+        "host": "elbname-234234234234.ap-southeast-2.elb.amazonaws.com",
+        "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36",
+        "x-amzn-trace-id": "Root=1-5d208c21-1820f2f8ce32a27da63181ae",
+        "accept-encoding": "gzip, deflate",
         "upgrade-insecure-requests": "1",
       },
     })

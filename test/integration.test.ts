@@ -3,6 +3,7 @@ import app from './app';
 import lambda from '../src/lambda';
 
 import event from './fixtures/event.json';
+import eventAlb from './fixtures/alb-event.json';
 
 const handler = lambda(app);
 
@@ -107,19 +108,21 @@ describe('integration', () => {
         baseUrl: "",
         body: {},
         cookies: {
-          s_fid: "39BE527E3767FB80-174D965C9E0459D6",
-          utag_main: "v_id:016460035de500182b7d0eaa1b650307800430700093c$_sn:2$_ss:1$_st:1542333456244$ses_id:1542331656244;exp-session$_pn:1;exp-session",
-        },
+          cookie1: "value1",
+          cookie2: "value2",
+          cookie3: "value3",        },
         fresh: false,
         hostname: "apiid.execute-api.ap-southeast-2.amazonaws.com",
-        ip: "203.13.23.10",
+        ip: "1.152.111.246",
         ips: [],
         method: "GET",
-        originalUrl: "/reflect",
+        originalUrl: "/inspect?param=ab%20cd",
         params: {},
-        path: "/reflect",
+        path: "/inspect",
         protocol: "https",
-        query: {},
+        query: {
+          param: "ab cd",
+        },
         secure: true,
         signedCookies: {},
         stale: true,
@@ -128,8 +131,48 @@ describe('integration', () => {
           "execute-api",
           "apiid",
         ],
-        url: "/reflect",
-        xForwardedFor: "203.13.23.10, 70.132.29.78",
+        url: "/inspect?param=ab%20cd",
+        xForwardedFor: "1.152.111.246, 54.239.202.85",
+        xhr: false,
+      })
+    })
+  })
+
+  it('handles ALB event', () => {
+    return handler(eventAlb).then(response => {
+      expect(response.statusCode).toEqual(200);
+      expect(response.isBase64Encoded).toEqual(false);
+      expect(response.headers!["content-type"]).toEqual('application/json; charset=utf-8');
+      expect(response.headers!["x-powered-by"]).toEqual('Express');
+      const json = JSON.parse(response.body);
+      expect(json).toEqual({
+        baseUrl: "",
+        body: {},
+        cookies: {
+          cookie1: "value1",
+          cookie2: "value2",
+          cookie3: "value3",        },
+        fresh: false,
+        hostname: "elbname-234234234234.ap-southeast-2.elb.amazonaws.com",
+        ip: "1.136.104.131",
+        ips: [],
+        method: "GET",
+        originalUrl: "/inspect?param=ab%20cd",
+        params: {},
+        path: "/inspect",
+        protocol: "http",
+        query: {
+          param: "ab cd",
+        },
+        secure: false,
+        signedCookies: {},
+        stale: true,
+        subdomains: [
+          "elb",
+          "ap-southeast-2",
+          "elbname-234234234234",
+        ],
+        url: "/inspect?param=ab%20cd",
         xhr: false,
       })
     })

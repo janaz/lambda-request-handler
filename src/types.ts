@@ -19,6 +19,7 @@ export interface APIGatewayEvent {
     identity?: {
       sourceIp: string,
     },
+
     [k: string]: any
   }
 }
@@ -32,4 +33,8 @@ export interface LambdaResponse extends LambdaResponseHeaders {
   statusCode: number,
   body: string,
   isBase64Encoded: boolean
+}
+
+export interface LambdaContext {
+  awsRequestId: string;
 }

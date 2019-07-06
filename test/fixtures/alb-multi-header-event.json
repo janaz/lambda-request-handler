@@ -1,0 +1,54 @@
+{
+    "requestContext": {
+        "elb": {
+            "targetGroupArn": "arn:aws:elasticloadbalancing:ap-southeast-2:248139140343:targetgroup/default/277714cd42070f8a"
+        }
+    },
+    "httpMethod": "GET",
+    "path": "/inspect",
+    "multiValueQueryStringParameters": {
+        "param": [
+            "ab%20cd"
+        ]
+    },
+    "multiValueHeaders": {
+        "accept": [
+            "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3"
+        ],
+        "accept-encoding": [
+            "gzip, deflate"
+        ],
+        "accept-language": [
+            "en-US,en;q=0.9,pl-PL;q=0.8,pl;q=0.7,ru;q=0.6"
+        ],
+        "connection": [
+            "keep-alive"
+        ],
+        "cookie": [
+            "cookie3=value3; cookie2=value2; cookie1=value1"
+        ],
+        "host": [
+            "elbname-234234234234.ap-southeast-2.elb.amazonaws.com"
+        ],
+        "upgrade-insecure-requests": [
+            "1"
+        ],
+        "user-agent": [
+            "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36"
+        ],
+        "x-amzn-trace-id": [
+            "Root=1-5d208c21-1820f2f8ce32a27da63181ae"
+        ],
+        "x-forwarded-for": [
+            "1.136.104.131"
+        ],
+        "x-forwarded-port": [
+            "80"
+        ],
+        "x-forwarded-proto": [
+            "http"
+        ]
+    },
+    "body": "",
+    "isBase64Encoded": false
+}
