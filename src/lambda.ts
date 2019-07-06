@@ -8,7 +8,8 @@ declare namespace handler {
   type APIGatewayEvent = apigw.APIGatewayEvent;
   type APIGatewayResponse = apigw.LambdaResponse;
   type LambdaResponse = apigw.LambdaResponse;
-  type APIGatewayEventHandler = (event: handler.APIGatewayEvent) => Promise<handler.LambdaResponse>
+  type LambdaContext = apigw.LambdaContext;
+  type APIGatewayEventHandler = (event: handler.APIGatewayEvent, context?: handler.LambdaContext) => Promise<handler.LambdaResponse>
 };
 
 const eventWithMultiValueHeaders = (event: handler.APIGatewayEvent): boolean => {
@@ -17,7 +18,7 @@ const eventWithMultiValueHeaders = (event: handler.APIGatewayEvent): boolean => 
 
 const handlerPromise = (appPromiseFn: () => Promise<RequestListener>): handler.APIGatewayEventHandler => {
   let _p: Promise<RequestListener> | null = null;
-  return event => {
+  return (event, ctx) => {
     if (!_p) {
       _p = appPromiseFn();
     }
@@ -25,7 +26,7 @@ const handlerPromise = (appPromiseFn: () => Promise<RequestListener>): handler.A
       .then(app => {
         return Promise.resolve()
           .then(() => {
-            const reqOptions = eventToRequestOptions(event);
+            const reqOptions = eventToRequestOptions(event, ctx);
             const appHandler = inProcessRequestHandler(app);
             return appHandler(reqOptions)
           })
