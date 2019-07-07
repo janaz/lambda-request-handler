@@ -23,21 +23,22 @@ const handlerPromise = (appPromiseFn: () => Promise<RequestListener>): handler.A
       _p = appPromiseFn();
     }
     return _p
-      .then(app => {
-        return Promise.resolve()
-          .then(() => {
-            const reqOptions = eventToRequestOptions(event, ctx);
-            const appHandler = inProcessRequestHandler(app);
-            return appHandler(reqOptions)
-          })
-          .then(res => inProcessResponseToLambdaResponse(res, eventWithMultiValueHeaders(event)))
-          .catch(e => {
-            console.error(e);
-            return errorResponse();
-          });
-      })
+      .then(app => processRequest(app, event, ctx));
     }
 }
+
+const processRequest = (app: RequestListener, event: handler.APIGatewayEvent, ctx?: handler.LambdaContext): Promise<handler.LambdaResponse> =>
+  Promise.resolve()
+    .then(() => {
+      const reqOptions = eventToRequestOptions(event, ctx);
+      const appHandler = inProcessRequestHandler(app);
+      return appHandler(reqOptions)
+    })
+    .then(res => inProcessResponseToLambdaResponse(res, eventWithMultiValueHeaders(event)))
+    .catch(e => {
+      console.error(e);
+      return errorResponse();
+    });
 
 const handler = (app: RequestListener): handler.APIGatewayEventHandler => handlerPromise(() => Promise.resolve(app));
 
