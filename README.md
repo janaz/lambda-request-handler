@@ -7,6 +7,7 @@ An npm module that allows your Node.js web applications to be deployed as an AWS
 The list of supported frameworks matches [in-process-request](https://github.com/janaz/in-process-request)
 * Express.js v3
 * Express.js v4
+* Express.js v5
 * Connect v3
 * Koa v2
 
