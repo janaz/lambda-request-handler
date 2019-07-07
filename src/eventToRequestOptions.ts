@@ -20,18 +20,17 @@ const getValuesFromStringAndMultiString = (stringMap: StringMap<string> | null |
 const eventToRequestOptions = (event: APIGatewayEvent, ctx?: LambdaContext): InProcessRequestOptions => {
   let remoteAddress:string | undefined = undefined;
   let ssl = false;
+  const queryStringParams = getValuesFromStringAndMultiString(event.queryStringParameters, event.multiValueQueryStringParameters);
   const headers = getValuesFromStringAndMultiString(event.headers, event.multiValueHeaders);
   if (ctx) {
     headers['x-aws-lambda-request-id'] = ctx.awsRequestId;
   }
-  const queryStringParams = getValuesFromStringAndMultiString(event.queryStringParameters, event.multiValueQueryStringParameters);
   if (event.requestContext && event.requestContext.elb) {
     //load balancer request - it has the client ip in x-forwarded-for header
     if (typeof headers['x-forwarded-for'] === 'string') {
-      const ips = (headers['x-forwarded-for'] as string).split(' ');
-      remoteAddress = ips[ips.length - 1];
-      ips.splice(-1, 1)
-      headers['x-forwarded-for'] = ips.join(' ');
+      const ips = headers['x-forwarded-for'].split(',').map(ip => ip.trim());
+      remoteAddress = ips.splice(-1, 1)[0]
+      headers['x-forwarded-for'] = ips.join(', ');
       ssl = headers['x-forwarded-proto'] === 'https';
       if (ips.length === 0) {
         delete headers['x-forwarded-for'];
@@ -39,7 +38,7 @@ const eventToRequestOptions = (event: APIGatewayEvent, ctx?: LambdaContext): InP
         delete headers['x-forwarded-proto'];
       }
     }
-    //elb also doesn't uri decode query string params
+    //elb doesn't uri decode query string params
     Object.keys(queryStringParams).forEach(k => {
       queryStringParams[k] = decodeURIComponent(queryStringParams[k])
     })

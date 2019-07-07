@@ -94,7 +94,7 @@ describe('eventToRequestOptions', () => {
         httpMethod: 'HEAD',
         body: null,
         headers: {
-          "x-forwarded-for": "10.10.2.3 129.45.45.48",
+          "x-forwarded-for": "10.10.2.3, 129.45.45.48",
           "x-forwarded-proto": "http",
         },
         queryStringParameters: {},
