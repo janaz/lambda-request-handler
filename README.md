@@ -29,6 +29,9 @@ The handler supports events from the following sources:
 
 The default export of `lambda-request-handler` is a function that takes an application handler (i.e. Express.js app instance) as an argument and returns an AWS Lambda handler function.
 
+An additional header is injected into the request
+* `x-aws-lambda-request-id` - AWS Lambda Request Id
+
 ```sh
 $ npm install lambda-request-handler
 ```
@@ -42,6 +45,7 @@ const app = express()
 app.get('/user/:id', (req, res) => {
   res.json({
     id: req.params.id,
+    lambdaRequestId: req.header('x-aws-lambda-request-id')
     name: 'John'
   })
 })
