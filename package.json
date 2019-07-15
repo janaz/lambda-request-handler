@@ -1,6 +1,6 @@
 {
   "name": "lambda-request-handler",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "license": "(MIT OR Apache-2.0)",
   "scripts": {
     "precompile": "rm -rf dist",
@@ -11,8 +11,8 @@
     "/dist"
   ],
   "repository": {
-    "type" : "git",
-    "url" : "https://github.com/janaz/lambda-request-handler"
+    "type": "git",
+    "url": "https://github.com/janaz/lambda-request-handler"
   },
   "keywords": [
     "aws",
