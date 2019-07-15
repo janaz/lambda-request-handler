@@ -10,6 +10,10 @@
   "files": [
     "/dist"
   ],
+  "repository": {
+    "type" : "git",
+    "url" : "https://github.com/janaz/lambda-request-handler"
+  },
   "keywords": [
     "aws",
     "serverless",
