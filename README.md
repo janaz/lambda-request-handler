@@ -13,7 +13,7 @@ The list of supported frameworks matches [in-process-request](https://github.com
 
 Inspired by [aws-serverless-express](https://github.com/awslabs/aws-serverless-express)
 
-It supports `nodejs8.10` and `nodejs10.x` execution environments.
+It supports `nodejs10.x` and `nodejs12.x` execution environments.
 
 The main differences between this module and `aws-serverless-express` are
 * It's using [in-process-request](https://github.com/janaz/in-process-request) module to execute app handlers in-process without having to start background http server
