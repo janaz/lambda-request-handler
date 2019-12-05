@@ -3,6 +3,7 @@ import app from './app';
 import lambda from '../src/lambda';
 
 import event from './fixtures/event.json';
+import eventHttpApi from './fixtures/event-http-api.json';
 import eventAlb from './fixtures/alb-event.json';
 
 const handler = lambda(app);
@@ -110,11 +111,12 @@ describe('integration', () => {
         cookies: {
           cookie1: "value1",
           cookie2: "value2",
-          cookie3: "value3",        },
+          cookie3: "value3",
+        },
         fresh: false,
         hostname: "apiid.execute-api.ap-southeast-2.amazonaws.com",
         ip: "1.152.111.246",
-        ips: [],
+        ips: ["1.152.111.246", "54.239.202.85"],
         method: "GET",
         originalUrl: "/inspect?param=ab%20cd",
         params: {},
@@ -138,6 +140,48 @@ describe('integration', () => {
     })
   })
 
+  it('handles HTTP API event', () => {
+    return handler(eventHttpApi).then(response => {
+      expect(response.statusCode).toEqual(200);
+      expect(response.isBase64Encoded).toEqual(false);
+      expect(response.multiValueHeaders!["content-type"][0]).toEqual('application/json; charset=utf-8');
+      expect(response.multiValueHeaders!["x-powered-by"][0]).toEqual('Express');
+      const json = JSON.parse(response.body);
+      expect(json).toEqual({
+        baseUrl: "",
+        body: {},
+        cookies: {
+          cookie1: "value1",
+          cookie2: "value2",
+          cookie3: "value3",
+        },
+        fresh: false,
+        hostname: "apiid.execute-api.ap-southeast-2.amazonaws.com",
+        ip: "4.5.6.7",
+        ips: ["4.5.6.7", "9.9.9.9"],
+        method: "GET",
+        originalUrl: "/inspect?param=ab%20cd",
+        params: {},
+        path: "/inspect",
+        protocol: "https",
+        query: {
+          param: "ab cd",
+        },
+        secure: true,
+        signedCookies: {},
+        stale: true,
+        subdomains: [
+          "ap-southeast-2",
+          "execute-api",
+          "apiid",
+        ],
+        url: "/inspect?param=ab%20cd",
+        xForwardedFor: "1.2.3.4, 4.5.6.7, 9.9.9.9",
+        xhr: false,
+      })
+    })
+  })
+
   it('handles ALB event', () => {
     return handler(eventAlb).then(response => {
       expect(response.statusCode).toEqual(200);
@@ -151,7 +195,8 @@ describe('integration', () => {
         cookies: {
           cookie1: "value1",
           cookie2: "value2",
-          cookie3: "value3",        },
+          cookie3: "value3",
+        },
         fresh: false,
         hostname: "elbname-234234234234.ap-southeast-2.elb.amazonaws.com",
         ip: "1.136.104.131",

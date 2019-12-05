@@ -45,7 +45,12 @@ const eventToRequestOptions = (event: APIGatewayEvent, ctx?: LambdaContext): InP
   } else {
     // api gateway request
     ssl = true;
-    remoteAddress = event.requestContext && event.requestContext.identity && event.requestContext.identity.sourceIp
+    const remoteAddressList = event.requestContext && event.requestContext.identity && event.requestContext.identity.sourceIp
+    if (remoteAddressList) {
+      // HTTP API includes the full x-forwarder for chain here and the remote ip is the last element
+      const items = remoteAddressList.split(',').map(s => s.trim());
+      remoteAddress = items[items.length - 1];
+    }
   }
   return {
     method: event.httpMethod,
