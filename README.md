@@ -1,6 +1,6 @@
 # lambda-request-handler
 
-An npm module that allows your Node.js web applications to be deployed as an AWS Lambda function and invoked in response to API Gateway or Application Load Balancer requests.
+An npm module that allows your Node.js web applications to be deployed as an AWS Lambda function and invoked in response to API Gateway, HTTP API, or Application Load Balancer requests.
 
 [![Build Status](https://travis-ci.org/janaz/lambda-request-handler.svg?branch=master)](https://travis-ci.org/janaz/lambda-request-handler)
 

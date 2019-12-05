@@ -1,6 +1,6 @@
 {
   "name": "lambda-request-handler",
-  "version": "0.2.3",
+  "version": "0.3.0",
   "license": "(MIT OR Apache-2.0)",
   "scripts": {
     "precompile": "rm -rf dist",
@@ -28,7 +28,8 @@
     "response",
     "api-gateway",
     "alb",
-    "application-load-balancer"
+    "application-load-balancer",
+    "http-api"
   ],
   "main": "./dist/compile/lambda",
   "types": "./dist/compile/lambda.d.ts",
