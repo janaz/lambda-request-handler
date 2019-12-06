@@ -18,29 +18,28 @@ const eventWithMultiValueHeaders = (event: handler.APIGatewayEvent): boolean => 
 
 const handlerPromise = (appPromiseFn: () => Promise<RequestListener>): handler.APIGatewayEventHandler => {
   let _p: Promise<RequestListener> | null = null;
-  return (event, ctx) => {
+  return async (event, ctx) => {
     if (!_p) {
       _p = appPromiseFn();
     }
-    return _p
-      .then(app => processRequest(app, event, ctx));
-    }
+    const app = await _p;
+    return processRequest(app, event, ctx);
+  }
 }
 
-const processRequest = (app: RequestListener, event: handler.APIGatewayEvent, ctx?: handler.LambdaContext): Promise<handler.LambdaResponse> =>
-  Promise.resolve()
-    .then(() => {
-      const reqOptions = eventToRequestOptions(event, ctx);
-      const appHandler = inProcessRequestHandler(app);
-      return appHandler(reqOptions)
-    })
-    .then(res => inProcessResponseToLambdaResponse(res, eventWithMultiValueHeaders(event)))
-    .catch(e => {
-      console.error(e);
-      return errorResponse();
-    });
+const processRequest = async (app: RequestListener, event: handler.APIGatewayEvent, ctx?: handler.LambdaContext): Promise<handler.LambdaResponse> => {
+  try {
+    const reqOptions = eventToRequestOptions(event, ctx);
+    const appHandler = inProcessRequestHandler(app);
+    const mockResponse = await appHandler(reqOptions);
+    return inProcessResponseToLambdaResponse(mockResponse, eventWithMultiValueHeaders(event));
+  } catch (e) {
+    console.error(e);
+    return errorResponse();
+  }
+}
 
-const handler = (app: RequestListener): handler.APIGatewayEventHandler => handlerPromise(() => Promise.resolve(app));
+const handler = (app: RequestListener): handler.APIGatewayEventHandler => handlerPromise(async () => app);
 
 handler.deferred = handlerPromise;
 
