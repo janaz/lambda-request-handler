@@ -13,7 +13,7 @@ declare namespace handler {
   type APIGatewayEventHandler = (event: handler.APIGatewayEvent, context?: handler.LambdaContext) => Promise<handler.LambdaResponse>
 };
 
-const eventWithMultiValueHeaders = (event: handler.APIGatewayEvent): boolean => {
+const eventHasMultiValueHeaders = (event: handler.APIGatewayEvent): boolean => {
   return event.multiValueHeaders !== null && typeof event.multiValueHeaders === 'object';
 }
 
@@ -27,7 +27,7 @@ const processRequest = (app: Promise<RequestListener>): handler.APIGatewayEventH
     try {
       const reqOptions = eventToRequestOptions(event, ctx);
       const mockResponse = await appHandler(reqOptions);
-      return inProcessResponseToLambdaResponse(mockResponse, eventWithMultiValueHeaders(event));
+      return inProcessResponseToLambdaResponse(mockResponse, eventHasMultiValueHeaders(event));
     } catch (e) {
       console.error(e);
       return errorResponse();
