@@ -13,15 +13,19 @@ declare namespace handler {
   type APIGatewayEventHandler = (event: handler.APIGatewayEvent, context?: handler.LambdaContext) => Promise<handler.LambdaResponse>
 };
 
+type F<A, B> = (a: A) => B;
+type Nullable<T> = T | null;
+type PromiseFactory<A> = () => Promise<A>;
+
 const eventHasMultiValueHeaders = (event: handler.APIGatewayEvent): boolean => {
   return event.multiValueHeaders !== null && typeof event.multiValueHeaders === 'object';
 }
 
-const processRequest = (app: Promise<RequestListener>): handler.APIGatewayEventHandler => {
-  let appHandler: ((r: MockRequestOptions) => Promise<MockResponse>) | null = null;
+const handlerBuilder = (appFn: PromiseFactory<RequestListener>): handler.APIGatewayEventHandler => {
+  let appHandler: Nullable<F<MockRequestOptions, Promise<MockResponse>>>;
   return async (event, ctx) => {
     if (!appHandler) {
-      const resolvedApp = await app;
+      const resolvedApp = await appFn();
       appHandler = inProcessRequestHandler(resolvedApp);
     }
     try {
@@ -35,10 +39,7 @@ const processRequest = (app: Promise<RequestListener>): handler.APIGatewayEventH
   }
 };
 
-const handlerPromise = (appPromiseFn: () => Promise<RequestListener>): handler.APIGatewayEventHandler => processRequest(appPromiseFn());
-
-const handler = (app: RequestListener): handler.APIGatewayEventHandler => processRequest(Promise.resolve(app));
-
-handler.deferred = handlerPromise;
+const handler = (app: RequestListener) => handlerBuilder(() => Promise.resolve(app));
+handler.deferred = handlerBuilder;
 
 export = handler;
