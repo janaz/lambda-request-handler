@@ -4,6 +4,7 @@ install:
 node_js:
   - '10'
   - '12'
+  - '13'
 script:
   - yarn test
 jobs:
