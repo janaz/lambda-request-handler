@@ -3,16 +3,16 @@ import * as url from 'url';
 import { InProcessRequestOptions } from 'in-process-request';
 import { APIGatewayEvent, StringMap, LambdaContext } from './types';
 
-const getValuesFromStringAndMultiString = (stringMap: StringMap<string> | null | undefined, multiStringMap: StringMap<string[]> | null | undefined): StringMap<string> => {
+const getValuesFromStringAndMultiString = (stringMap: StringMap<string> | null | undefined, multiStringMap: StringMap<string[]> | null | undefined, lcKeys = true): StringMap<string> => {
   const retVal: StringMap<string> = {};
   const singleMap = stringMap || {};
   Object.keys(singleMap).forEach(k => {
-    retVal[k.toLowerCase()] = singleMap[k];
+    retVal[lcKeys ? k.toLowerCase() : k] = singleMap[k];
   });
   const multiMap = multiStringMap || {};
   Object.keys(multiMap).forEach(k => {
     // get the last value
-    retVal[k.toLowerCase()] = multiMap[k][multiMap[k].length - 1];
+    retVal[lcKeys ? k.toLowerCase() : k] = multiMap[k][multiMap[k].length - 1];
   });
   return retVal;
 }
@@ -20,7 +20,7 @@ const getValuesFromStringAndMultiString = (stringMap: StringMap<string> | null |
 const eventToRequestOptions = (event: APIGatewayEvent, ctx?: LambdaContext): InProcessRequestOptions => {
   let remoteAddress:string | undefined = undefined;
   let ssl = false;
-  const queryStringParams = getValuesFromStringAndMultiString(event.queryStringParameters, event.multiValueQueryStringParameters);
+  const queryStringParams = getValuesFromStringAndMultiString(event.queryStringParameters, event.multiValueQueryStringParameters, false);
   const headers = getValuesFromStringAndMultiString(event.headers, event.multiValueHeaders);
   if (ctx) {
     headers['x-aws-lambda-request-id'] = ctx.awsRequestId;
