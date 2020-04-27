@@ -1,16 +1,24 @@
 import app from './app';
 import lambda from '../src/lambda';
 
-let __test = 0;
-const handler = lambda.deferred(() => new Promise(resolve => {
-  __test = __test + 1;
-  setTimeout(() => {
-    resolve(app);
-  }, 10);
-}));
+
+const testEnvironment = () => {
+  let __test = 0;
+  const _handler = lambda.deferred(() => new Promise(resolve => {
+    __test = __test + 1;
+    setTimeout(() => {
+      resolve(app);
+    }, 10);
+  }));
+
+  return {
+    getValue: () => __test,
+    handler: _handler,
+  }
+}
 
 describe('integration for deferred app', () => {
-  it('returns static file', () => {
+  it('returns static file', async () => {
     const myEvent = {
       path: "/static/file.png",
       httpMethod: "GET",
@@ -19,15 +27,15 @@ describe('integration for deferred app', () => {
       isBase64Encoded: false,
       body: null
     }
-    return handler(myEvent).then(response => {
-      expect(response.statusCode).toEqual(200);
-      expect(response.isBase64Encoded).toEqual(true);
-      expect(response.multiValueHeaders!["content-type"][0]).toEqual('image/png');
-      expect(response.multiValueHeaders!["content-length"][0]).toEqual('178');
-    });
+    const t = testEnvironment()
+    const response = await t.handler(myEvent)
+    expect(response.statusCode).toEqual(200);
+    expect(response.isBase64Encoded).toEqual(true);
+    expect(response.multiValueHeaders!["content-type"][0]).toEqual('image/png');
+    expect(response.multiValueHeaders!["content-length"][0]).toEqual('178');
   });
 
-  it('resolves the app promise only once', () => {
+  it('resolves the app promise only once', async () => {
     const myEvent = {
       path: "/static/file.png",
       httpMethod: "GET",
@@ -36,16 +44,14 @@ describe('integration for deferred app', () => {
       isBase64Encoded: false,
       body: null
     }
-    return handler(myEvent)
-      .then(() => {
-        expect(__test).toEqual(1);
-        return handler(myEvent);
-      }).then(() => {
-        expect(__test).toEqual(1);
-      });
+    const t = testEnvironment()
+    await t.handler(myEvent)
+    expect(t.getValue()).toEqual(1);
+    await t.handler(myEvent);
+    expect(t.getValue()).toEqual(1);
   });
 
-  it('handler returns rejected promise if app cannot be initialized', () => {
+  it('handler returns rejected promise if app cannot be initialized', async () => {
     const failingHandler = lambda.deferred(() => Promise.reject(new Error('failed to initialize app')));
     const myEvent = {
       path: "/static/file.png",
@@ -55,15 +61,15 @@ describe('integration for deferred app', () => {
       isBase64Encoded: false,
       body: null
     }
-    return failingHandler(myEvent)
-      .then(
-        () => Promise.reject(new Error('should have failed')),
-        e => {
-          expect(e.message).toEqual('failed to initialize app')
-      })
+    try {
+      await failingHandler(myEvent)
+      fail(new Error('should have failed'))
+    } catch (e) {
+      expect(e.message).toEqual('failed to initialize app')
+    }
   })
 
-  it('returns 500 if there is a problem with the request', () => {
+  it('returns 500 if there is a problem with the request', async () => {
     const failingApp = lambda.deferred(() => Promise.resolve(() => {throw new Error('failed')}));
     const myEvent = {
       path: "/static/file.png",
@@ -73,15 +79,13 @@ describe('integration for deferred app', () => {
       isBase64Encoded: false,
       body: null
     }
-    return failingApp(myEvent)
-      .then((res) => {
-        expect(res).toEqual({
-          body: "",
-          isBase64Encoded: false,
-          multiValueHeaders: {},
-          statusCode: 500,
-        })
-      });
+    const res = await failingApp(myEvent)
+    expect(res).toEqual({
+      body: "",
+      isBase64Encoded: false,
+      multiValueHeaders: {},
+      statusCode: 500,
+    })
   })
 
 })
