@@ -23,8 +23,9 @@ The main differences between this module and `aws-serverless-express` are
 * It's free from issues caused by limits in Node.js http module such as header size limit
 
 The handler supports events from the following sources:
-- API Gateway
-- Application Load Balancer
+- API Gateway [REST APIs](https://docs.aws.amazon.com/apigateway/latest/developerguide/apigateway-rest-api.html)
+- API Gateway [HTTP APIs](https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api.html)
+- [Application Load Balancer](https://docs.aws.amazon.com/lambda/latest/dg/services-alb.html)
 
 ## Usage
 
