@@ -274,4 +274,29 @@ describe('integration', () => {
     });
   });
 
+  it('handles url GET params as expected', () => {
+    const myEvent = {
+      path: "/inspect",
+      httpMethod: "GET",
+      headers: {},
+      multiValueHeaders: {},
+      queryStringParameters: {
+        paRaM1: 'valuE1',
+        param2: 'value2'
+      },
+      isBase64Encoded: false,
+      body: null
+    }
+
+    return handler(myEvent).then(response => {
+      expect(response.statusCode).toEqual(200);
+      const json = JSON.parse(response.body);
+      expect(json.originalUrl).toEqual("/inspect?paRaM1=valuE1&param2=value2");
+      expect(json.query).toEqual({
+        paRaM1: 'valuE1',
+        param2: 'value2'
+      })
+    })
+  });
+
 })
