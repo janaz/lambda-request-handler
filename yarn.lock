@@ -471,9 +471,9 @@
     "@babel/types" "^7.0.0"
 
 "@types/babel__traverse@*", "@types/babel__traverse@^7.0.6":
-  version "7.0.10"
-  resolved "https://registry.yarnpkg.com/@types/babel__traverse/-/babel__traverse-7.0.10.tgz#d9a99f017317d9b3d1abc2ced45d3bca68df0daf"
-  integrity sha512-74fNdUGrWsgIB/V9kTO5FGHPWYY6Eqn+3Z7L6Hc4e/BxjYV7puvBqp5HwsVYYfLm6iURYBNCx4Ut37OF9yitCw==
+  version "7.0.11"
+  resolved "https://registry.yarnpkg.com/@types/babel__traverse/-/babel__traverse-7.0.11.tgz#1ae3010e8bf8851d324878b42acec71986486d18"
+  integrity sha512-ddHK5icION5U6q11+tV2f9Mo6CZVuT8GJKld2q9LqHSZbvLbH34Kcu2yFGckZut453+eQU6btIA3RihmnRgI+Q==
   dependencies:
     "@babel/types" "^7.3.0"
 
@@ -1846,10 +1846,10 @@ imurmurhash@^0.1.4:
   resolved "https://registry.yarnpkg.com/imurmurhash/-/imurmurhash-0.1.4.tgz#9218b9b2b928a238b13dc4fb6b6d576f231453ea"
   integrity sha1-khi5srkoojixPcT7a21XbyMUU+o=
 
-in-process-request@^0.0.8:
-  version "0.0.8"
-  resolved "https://registry.yarnpkg.com/in-process-request/-/in-process-request-0.0.8.tgz#1421d88c275c0c42e4a5916b21aa620138c78306"
-  integrity sha512-lh/8eJvcxgmz4cWNyp1edAkAJfomQpTJf9tir3wN1uFQ5gSMdlKF79QKoUqyD/5Sj2nXIr0Gn34PQM6U64cqZA==
+in-process-request@^0.0.9:
+  version "0.0.9"
+  resolved "https://registry.yarnpkg.com/in-process-request/-/in-process-request-0.0.9.tgz#8a32b1c4c7baaff61c231e1f01ff5ad82b4b1955"
+  integrity sha512-VVeTlv/F51UnpwxQ4Y+y2njkr7gsdy2l21mqeqx2eJN+BHzwdOICIX/nSCYs/gum/dYAvv50LoKZnh3Jo9ozxQ==
 
 inflight@^1.0.4:
   version "1.0.6"

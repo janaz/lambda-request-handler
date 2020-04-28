@@ -10,6 +10,7 @@ describe('inProcessResponseToLambdaResponse', () => {
     },
     isUTF8,
     statusCode: 200,
+    statusMessage: 'OK',
   });
 
   it('returns 200', () => {
