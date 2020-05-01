@@ -2,31 +2,42 @@ export interface StringMap<T> {
   [k: string]: T
 }
 
+interface HttpRequestContext {
+  method: string
+  path: string
+  protocol: string
+  sourceIp: string
+  userAgent: string
+}
+
 export interface APIGatewayEvent {
-  path: string,
-  queryStringParameters?: StringMap<string> | null | undefined,
-  multiValueQueryStringParameters?: StringMap<string[]> | null | undefined,
-  body: string | null | undefined,
-  headers?: StringMap<string> | null | undefined,
-  multiValueHeaders?: StringMap<string[]> | null | undefined,
+  path?: string,
+  version?: number | string,
+  queryStringParameters?: StringMap<string> | null,
+  multiValueQueryStringParameters?: StringMap<string[]> | null,
+  body?: string | null,
+  headers?: StringMap<string> | null,
+  multiValueHeaders?: StringMap<string[]> | null,
   isBase64Encoded: boolean,
-  httpMethod: string,
+  httpMethod?: string,
   requestContext?: {
     elb?: {
       targetGroupArn: string,
     },
+    http?: HttpRequestContext,
     stage?: string,
     identity?: {
       sourceIp: string,
     },
 
-    [k: string]: any
+    // [k: string]: any
   }
 }
 
 export interface LambdaResponseHeaders {
-  headers?: StringMap<string> | undefined
-  multiValueHeaders?: StringMap<string[]> | undefined
+  headers?: StringMap<string>
+  multiValueHeaders?: StringMap<string[]>
+  cookies?: string[]
 }
 
 export interface LambdaResponse extends LambdaResponseHeaders {

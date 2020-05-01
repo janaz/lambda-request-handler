@@ -5,6 +5,7 @@ describe('inProcessResponseToLambdaResponse', () => {
   const generateMockResponse = (isUTF8: boolean = true): InProcessResponse => ({
     body: Buffer.from('hello'),
     headers: {
+      'set-cookie': ['chocolate=10; Path=/', 'peanut_butter=20; Path=/'],
       'content-type': 'text/plain',
       'x-custom': '10',
     },
@@ -14,45 +15,78 @@ describe('inProcessResponseToLambdaResponse', () => {
   });
 
   it('returns 200', () => {
-    const res = inProcessResponseToLambdaResponse(generateMockResponse(), true);
+    const res = inProcessResponseToLambdaResponse(generateMockResponse(), true, false);
     expect(res.statusCode).toEqual(200);
   })
 
   it('has plain text body', () => {
-    const res = inProcessResponseToLambdaResponse(generateMockResponse(), true);
+    const res = inProcessResponseToLambdaResponse(generateMockResponse(), true, false);
     expect(res.body).toEqual('hello');
   })
 
   it('is not base64 encoded', () => {
-    const res = inProcessResponseToLambdaResponse(generateMockResponse(), true);
+    const res = inProcessResponseToLambdaResponse(generateMockResponse(), true, false);
     expect(res.isBase64Encoded).toEqual(false);
   })
 
-  it('has multi value headers', () => {
-    const res = inProcessResponseToLambdaResponse(generateMockResponse(), true);
-    expect(res.multiValueHeaders!).toEqual({
-      'content-type': ['text/plain'],
-      'x-custom': ['10'],
-    });
-  })
+  describe('cookies and headers', () => {
 
-  it('has single value headers', () => {
-    const res = inProcessResponseToLambdaResponse(generateMockResponse(), false);
-    expect(res.headers!).toEqual({
-      'content-type': 'text/plain',
-      'x-custom': '10',
-    });
-  })
+    it('has multi value headers with cookies', () => {
+      const res = inProcessResponseToLambdaResponse(generateMockResponse(), true, true);
+      expect(res.multiValueHeaders).toEqual({
+        'content-type': ['text/plain'],
+        'x-custom': ['10'],
+        'set-cookie': [
+          'chocolate=10; Path=/',
+          'peanut_butter=20; Path=/',
+        ]
+      });
+    })
 
+    it('has multi value headers without cookies', () => {
+      const res = inProcessResponseToLambdaResponse(generateMockResponse(), true, false);
+      expect(res.multiValueHeaders).toEqual({
+        'content-type': ['text/plain'],
+        'x-custom': ['10'],
+        'set-cookie': [
+          'chocolate=10; Path=/',
+          'peanut_butter=20; Path=/',
+        ]
+      });
+    })
+
+    it('has single value headers when multiValue and cookies are not supported', () => {
+      const res = inProcessResponseToLambdaResponse(generateMockResponse(), false, false);
+      expect(res.headers!).toEqual({
+        'Set-cookie': 'peanut_butter=20; Path=/',
+        'set-cookie': 'chocolate=10; Path=/',
+        'content-type': 'text/plain',
+        'x-custom': '10',
+      });
+    })
+
+    it('has no set-cookie headers when multiValue is not supported, but cookies are', () => {
+      const res = inProcessResponseToLambdaResponse(generateMockResponse(), false, true);
+      expect(res.headers).toEqual({
+        'content-type': 'text/plain',
+        'x-custom': '10',
+      });
+      expect(res.cookies).toEqual([
+        'chocolate=10; Path=/',
+        'peanut_butter=20; Path=/',
+      ])
+    })
+
+  })
 
   describe('when the body is not utf8', () => {
     it('has base64 body', () => {
-      const res = inProcessResponseToLambdaResponse(generateMockResponse(false), true);
+      const res = inProcessResponseToLambdaResponse(generateMockResponse(false), true, false);
       expect(res.body).toEqual('aGVsbG8=');
     })
 
     it('is not base64 encoded', () => {
-      const res = inProcessResponseToLambdaResponse(generateMockResponse(false), true);
+      const res = inProcessResponseToLambdaResponse(generateMockResponse(false), true, false);
       expect(res.isBase64Encoded).toEqual(true);
     })
 

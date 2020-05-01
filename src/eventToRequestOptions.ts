@@ -52,9 +52,15 @@ const eventToRequestOptions = (event: APIGatewayEvent, ctx?: LambdaContext): InP
       remoteAddress = items[items.length - 1];
     }
   }
+  let method: string | undefined= event.httpMethod;
+  let path: string | undefined = event.path;
+  if (event.requestContext && typeof event.requestContext.http === 'object') {
+    method = event.requestContext.http.method
+    path = event.requestContext.http.path
+  }
   return {
-    method: event.httpMethod,
-    path: url.format({ pathname: event.path, query: queryStringParams }),
+    method,
+    path: url.format({ pathname: path, query: queryStringParams }),
     headers: headers,
     body: Buffer.from(event.body || '', event.isBase64Encoded ? 'base64' : 'utf8'),
     ssl,

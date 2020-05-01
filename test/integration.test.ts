@@ -4,6 +4,8 @@ import lambda from '../src/lambda';
 
 import event from './fixtures/event.json';
 import eventHttpApi from './fixtures/event-http-api.json';
+import eventHttpApiV1 from './fixtures/event-http-api-1.0.json';
+import eventHttpApiV2 from './fixtures/event-http-api-2.0.json';
 import eventAlb from './fixtures/alb-event.json';
 
 const handler = lambda(app);
@@ -134,7 +136,7 @@ describe('integration', () => {
     })
   })
 
-  it('handles HTTP API event', async () => {
+  it('handles HTTP API legacy event', async () => {
     const response = await handler(eventHttpApi)
     expect(response.statusCode).toEqual(200);
     expect(response.isBase64Encoded).toEqual(false);
@@ -174,6 +176,40 @@ describe('integration', () => {
       xhr: false,
     })
   })
+
+  it('handles HTTP API v1.0 event', async () => {
+    const response = await handler(eventHttpApiV1)
+    expect(response.statusCode).toEqual(200);
+    expect(response.isBase64Encoded).toEqual(false);
+    expect(response.multiValueHeaders!["content-type"][0]).toEqual('text/html; charset=utf-8');
+    expect(response.multiValueHeaders!["x-powered-by"][0]).toEqual('Express');
+    expect(response.multiValueHeaders!["set-cookie"]).toEqual([
+      'chocolate=10; Path=/',
+      'peanut_butter=20; Path=/',
+      'cinnamon=30; Path=/',
+    ])
+    expect(response.headers).toBeUndefined()
+    expect(response.cookies).toBeUndefined()
+    expect(response.body).toEqual('cookies set');
+  })
+
+  it('handles HTTP API v2.0 event', async () => {
+    const response = await handler(eventHttpApiV2)
+    expect(response.statusCode).toEqual(200);
+    expect(response.isBase64Encoded).toEqual(false);
+    expect(response.headers!["content-type"]).toEqual('text/html; charset=utf-8');
+    expect(response.headers!["x-powered-by"]).toEqual('Express');
+    expect(response.headers!["set-cookie"]).toBeUndefined()
+    expect(response.multiValueHeaders).toBeUndefined()
+    expect(response.cookies).toEqual([
+      'chocolate=10; Path=/',
+      'peanut_butter=20; Path=/',
+      'cinnamon=30; Path=/',
+      ])
+    expect(response.body).toEqual('cookies set');
+
+  })
+
 
   it('handles ALB event', async () => {
     const response = await handler(eventAlb)

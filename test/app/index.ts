@@ -23,7 +23,7 @@ app.get('/cookies', (_, res) => {
   res.cookie('chocolate', '10');
   res.cookie('peanut_butter', '20');
   res.cookie('cinnamon', '30');
-  res.end();
+  res.send("cookies set");
 });
 
 app.get('/user/:id', (req, res) => {

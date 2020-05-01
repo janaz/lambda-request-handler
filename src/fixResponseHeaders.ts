@@ -2,17 +2,22 @@ import { OutgoingHttpHeaders } from 'http';
 import { LambdaResponseHeaders, StringMap } from './types'
 import variations from './setCookieVariations';
 
-const fixResponseHeaders = (headers: OutgoingHttpHeaders, supportMultiHeaders: boolean): LambdaResponseHeaders => {
+const fixResponseHeaders = (headers: OutgoingHttpHeaders, supportMultiHeaders: boolean, supportCookies: boolean): LambdaResponseHeaders => {
   const multiValueHeaders: StringMap<string[]> = {};
   const singleValueHeaders: StringMap<string> = {};
+  let cookies: string[] | undefined = undefined
   Object.keys(headers).forEach(k => {
     if (Array.isArray(headers[k])) {
       const values = headers[k] as string[];
       multiValueHeaders[k] = values;
       if (k === 'set-cookie') {
-        values.forEach((value, i) => {
-          singleValueHeaders[variations[i]] = value
-        });
+        if (supportCookies) {
+          cookies = values
+        } else {
+          values.forEach((value, i) => {
+            singleValueHeaders[variations[i]] = value
+          });
+        }
       } else {
         singleValueHeaders[k] = values.join(',');
       }
@@ -36,7 +41,7 @@ const fixResponseHeaders = (headers: OutgoingHttpHeaders, supportMultiHeaders: b
   if (supportMultiHeaders) {
     return { multiValueHeaders };
   } else {
-    return { headers: singleValueHeaders }
+    return { headers: singleValueHeaders, cookies }
   }
 };
 

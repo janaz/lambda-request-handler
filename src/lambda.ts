@@ -21,6 +21,10 @@ const eventHasMultiValueHeaders = (event: handler.APIGatewayEvent): boolean => {
   return event.multiValueHeaders !== null && typeof event.multiValueHeaders === 'object';
 }
 
+const eventSupportsCookies = (event: handler.APIGatewayEvent): boolean => {
+  return event.version === "2.0" && !eventHasMultiValueHeaders(event)
+}
+
 const handlerBuilder = (appFn: PromiseFactory<RequestListener>): handler.APIGatewayEventHandler => {
   let appHandler: Nullable<F<MockRequestOptions, Promise<MockResponse>>>;
   return async (event, ctx) => {
@@ -31,7 +35,7 @@ const handlerBuilder = (appFn: PromiseFactory<RequestListener>): handler.APIGate
     try {
       const reqOptions = eventToRequestOptions(event, ctx);
       const mockResponse = await appHandler(reqOptions);
-      return inProcessResponseToLambdaResponse(mockResponse, eventHasMultiValueHeaders(event));
+      return inProcessResponseToLambdaResponse(mockResponse, eventHasMultiValueHeaders(event), eventSupportsCookies(event));
     } catch (e) {
       console.error(e);
       return errorResponse();
