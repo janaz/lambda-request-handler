@@ -23,6 +23,7 @@ app.get('/cookies', (_, res) => {
   res.cookie('chocolate', '10');
   res.cookie('peanut_butter', '20');
   res.cookie('cinnamon', '30');
+  res.cookie('hackyname', 'h3c/ky=;va{lu]e')
   res.send("cookies set");
 });
 

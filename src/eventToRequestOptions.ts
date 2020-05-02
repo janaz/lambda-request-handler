@@ -22,6 +22,9 @@ const eventToRequestOptions = (event: APIGatewayEvent, ctx?: LambdaContext): InP
   let ssl = false;
   const queryStringParams = getValuesFromStringAndMultiString(event.queryStringParameters, event.multiValueQueryStringParameters, false);
   const headers = getValuesFromStringAndMultiString(event.headers, event.multiValueHeaders);
+  if (Array.isArray(event.cookies)) {
+    headers['cookie'] = event.cookies.join('; ')
+  }
   if (ctx) {
     headers['x-aws-lambda-request-id'] = ctx.awsRequestId;
   }

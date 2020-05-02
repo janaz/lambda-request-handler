@@ -13,6 +13,7 @@ interface HttpRequestContext {
 export interface APIGatewayEvent {
   path?: string,
   version?: number | string,
+  cookies?: string[],
   queryStringParameters?: StringMap<string> | null,
   multiValueQueryStringParameters?: StringMap<string[]> | null,
   body?: string | null,

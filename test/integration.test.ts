@@ -42,6 +42,7 @@ describe('integration', () => {
         'chocolate=10; Path=/',
         'peanut_butter=20; Path=/',
         'cinnamon=30; Path=/',
+        'hackyname=h3c%2Fky%3D%3Bva%7Blu%5De; Path=/',
       ]
     }));
   });
@@ -109,6 +110,7 @@ describe('integration', () => {
         cookie1: "value1",
         cookie2: "value2",
         cookie3: "value3",
+        hackyname: "h3c/ky=;va{lu]e",
       },
       fresh: false,
       hostname: "apiid.execute-api.ap-southeast-2.amazonaws.com",
@@ -142,6 +144,7 @@ describe('integration', () => {
     expect(response.isBase64Encoded).toEqual(false);
     expect(response.multiValueHeaders!["content-type"][0]).toEqual('application/json; charset=utf-8');
     expect(response.multiValueHeaders!["x-powered-by"][0]).toEqual('Express');
+    expect(response.headers).toBeUndefined()
     const json = JSON.parse(response.body);
     expect(json).toEqual({
       baseUrl: "",
@@ -150,6 +153,7 @@ describe('integration', () => {
         cookie1: "value1",
         cookie2: "value2",
         cookie3: "value3",
+        hackyname: "h3c/ky=;va{lu]e",
       },
       fresh: false,
       hostname: "apiid.execute-api.ap-southeast-2.amazonaws.com",
@@ -181,33 +185,86 @@ describe('integration', () => {
     const response = await handler(eventHttpApiV1)
     expect(response.statusCode).toEqual(200);
     expect(response.isBase64Encoded).toEqual(false);
-    expect(response.multiValueHeaders!["content-type"][0]).toEqual('text/html; charset=utf-8');
+    expect(response.multiValueHeaders!["content-type"][0]).toEqual('application/json; charset=utf-8');
     expect(response.multiValueHeaders!["x-powered-by"][0]).toEqual('Express');
-    expect(response.multiValueHeaders!["set-cookie"]).toEqual([
-      'chocolate=10; Path=/',
-      'peanut_butter=20; Path=/',
-      'cinnamon=30; Path=/',
-    ])
     expect(response.headers).toBeUndefined()
-    expect(response.cookies).toBeUndefined()
-    expect(response.body).toEqual('cookies set');
+    const json = JSON.parse(response.body);
+    expect(json).toEqual({
+      baseUrl: "",
+      body: {},
+      cookies: {
+        cookie1: "value1",
+        cookie2: "value2",
+        cookie3: "value3",
+        hackyname: "h3c/ky=;va{lu]e",
+      },
+      fresh: false,
+      hostname: "apiid.execute-api.ap-southeast-2.amazonaws.com",
+      ip: "4.5.6.7",
+      ips: ["4.5.6.7", "9.9.9.9"],
+      method: "GET",
+      originalUrl: "/inspect?param=ab%20cd",
+      params: {},
+      path: "/inspect",
+      protocol: "https",
+      query: {
+        param: "ab cd",
+      },
+      secure: true,
+      signedCookies: {},
+      stale: true,
+      subdomains: [
+        "ap-southeast-2",
+        "execute-api",
+        "apiid",
+      ],
+      url: "/inspect?param=ab%20cd",
+      xForwardedFor: "1.2.3.4, 4.5.6.7, 9.9.9.9",
+      xhr: false,
+    })
   })
 
   it('handles HTTP API v2.0 event', async () => {
     const response = await handler(eventHttpApiV2)
     expect(response.statusCode).toEqual(200);
     expect(response.isBase64Encoded).toEqual(false);
-    expect(response.headers!["content-type"]).toEqual('text/html; charset=utf-8');
+    expect(response.headers!["content-type"]).toEqual('application/json; charset=utf-8');
     expect(response.headers!["x-powered-by"]).toEqual('Express');
-    expect(response.headers!["set-cookie"]).toBeUndefined()
     expect(response.multiValueHeaders).toBeUndefined()
-    expect(response.cookies).toEqual([
-      'chocolate=10; Path=/',
-      'peanut_butter=20; Path=/',
-      'cinnamon=30; Path=/',
-      ])
-    expect(response.body).toEqual('cookies set');
-
+    const json = JSON.parse(response.body);
+    expect(json).toEqual({
+      baseUrl: "",
+      body: {},
+      cookies: {
+        cookie1: "value1",
+        cookie2: "value2",
+        cookie3: "value3",
+        hackyname: "h3c/ky=;va{lu]e",
+      },
+      fresh: false,
+      hostname: "apiid.execute-api.ap-southeast-2.amazonaws.com",
+      ip: "4.5.6.7",
+      ips: ["4.5.6.7", "9.9.9.9"],
+      method: "GET",
+      originalUrl: "/inspect?param=ab%20cd",
+      params: {},
+      path: "/inspect",
+      protocol: "https",
+      query: {
+        param: "ab cd",
+      },
+      secure: true,
+      signedCookies: {},
+      stale: true,
+      subdomains: [
+        "ap-southeast-2",
+        "execute-api",
+        "apiid",
+      ],
+      url: "/inspect?param=ab%20cd",
+      xForwardedFor: "1.2.3.4, 4.5.6.7, 9.9.9.9",
+      xhr: false,
+    })
   })
 
 
@@ -225,6 +282,7 @@ describe('integration', () => {
         cookie1: "value1",
         cookie2: "value2",
         cookie3: "value3",
+        hackyname: "h3c/ky=;va{lu]e",
       },
       fresh: false,
       hostname: "elbname-234234234234.ap-southeast-2.elb.amazonaws.com",

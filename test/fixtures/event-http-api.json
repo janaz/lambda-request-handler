@@ -11,7 +11,7 @@
         "X-Forwarded-Port": "443",
         "X-Forwarded-Proto": "https",
         "accept": "*/*",
-        "cookie": "cookie1=value1; cookie2=value2; cookie3=value3"
+        "cookie": "cookie1=value1; cookie2=value2; cookie3=value3; hackyname=h3c%2Fky%3D%3Bva%7Blu%5De"
     },
     "multiValueHeaders": {
         "Content-Length": [
@@ -39,7 +39,7 @@
             "*/*"
         ],
         "cookie": [
-            "cookie1=value1; cookie2=value2; cookie3=value3"
+            "cookie1=value1; cookie2=value2; cookie3=value3; hackyname=h3c%2Fky%3D%3Bva%7Blu%5De"
         ]
     },
     "queryStringParameters": {

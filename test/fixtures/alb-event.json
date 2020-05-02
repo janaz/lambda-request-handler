@@ -14,7 +14,7 @@
         "accept-encoding": "gzip, deflate",
         "accept-language": "en-US,en;q=0.9,pl-PL;q=0.8,pl;q=0.7,ru;q=0.6",
         "connection": "keep-alive",
-        "cookie": "cookie3=value3; cookie2=value2; cookie1=value1",
+        "cookie": "cookie3=value3; cookie2=value2; cookie1=value1; hackyname=h3c%2Fky%3D%3Bva%7Blu%5De",
         "host": "elbname-234234234234.ap-southeast-2.elb.amazonaws.com",
         "upgrade-insecure-requests": "1",
         "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36",

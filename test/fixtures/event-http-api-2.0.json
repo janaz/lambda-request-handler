@@ -1,15 +1,21 @@
 {
   "version": "2.0",
   "routeKey": "$default",
-  "rawPath": "/inspects",
-  "rawQueryString": "",
+  "rawPath": "/inspect",
+  "rawQueryString": "param=ab%20cd",
+  "cookies": [
+    "cookie1=value1",
+    "cookie2=value2",
+    "cookie3=value3",
+    "hackyname=h3c%2Fky%3D%3Bva%7Blu%5De"
+  ],
   "headers": {
       "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
       "accept-encoding": "gzip, deflate, br",
       "accept-language": "en-US,en;q=0.9,pl-PL;q=0.8,pl;q=0.7,ru;q=0.6",
       "cache-control": "max-age=0",
       "content-length": "0",
-      "host": "myapiid.execute-api.ap-southeast-2.amazonaws.com",
+      "host": "apiid.execute-api.ap-southeast-2.amazonaws.com",
       "sec-fetch-dest": "document",
       "sec-fetch-mode": "navigate",
       "sec-fetch-site": "none",
@@ -17,20 +23,23 @@
       "upgrade-insecure-requests": "1",
       "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.129 Safari/537.36",
       "x-amzn-trace-id": "Root=1-5eac37e3-8e447320ce745898566b3300",
-      "x-forwarded-for": "123.123.123.123",
+      "x-forwarded-for": "1.2.3.4, 4.5.6.7, 9.9.9.9",
       "x-forwarded-port": "443",
       "x-forwarded-proto": "https"
   },
+  "queryStringParameters": {
+    "param": "ab cd"
+  },
   "requestContext": {
       "accountId": "356111732087",
-      "apiId": "myapiid",
-      "domainName": "myapiid.execute-api.ap-southeast-2.amazonaws.com",
-      "domainPrefix": "myapiid",
+      "apiId": "apiid",
+      "domainName": "apiid.execute-api.ap-southeast-2.amazonaws.com",
+      "domainPrefix": "apiid",
       "http": {
           "method": "GET",
-          "path": "/cookies",
+          "path": "/inspect",
           "protocol": "HTTP/1.1",
-          "sourceIp": "123.123.123.123",
+          "sourceIp": "9.9.9.9",
           "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.129 Safari/537.36"
       },
       "requestId": "L22rohfjSwMEMHA=",
