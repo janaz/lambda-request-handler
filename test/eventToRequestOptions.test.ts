@@ -1,13 +1,13 @@
 import eventToRequestOptions from '../src/eventToRequestOptions';
 
-import event from './fixtures/event.json';
+import eventRestApi from './fixtures/event-rest-api.json';
 import eventHealth from './fixtures/health-event.json';
 import eventAlb from './fixtures/alb-event.json';
 import evenMultiHeadertAlb from './fixtures/alb-multi-header-event.json';
 
 describe('eventToRequestOptions', () => {
   it('converts Api Gateway event to RequestOptions object', () => {
-    const reqOpts = eventToRequestOptions(event);
+    const reqOpts = eventToRequestOptions(eventRestApi);
     expect(reqOpts).toEqual({
       "method": "GET",
       "path": "/inspect?param=ab%20cd",
@@ -83,7 +83,7 @@ describe('eventToRequestOptions', () => {
   })
 
   it('sets x-aws-lambda-request-id header with context request id', () => {
-    const reqOpts =  eventToRequestOptions(event, {awsRequestId: 'req-id'});
+    const reqOpts =  eventToRequestOptions(eventRestApi, {awsRequestId: 'req-id'});
     expect(reqOpts.headers!['x-aws-lambda-request-id']).toEqual('req-id');
   });
 

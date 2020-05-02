@@ -2,7 +2,7 @@ import zlib from 'zlib';
 import app from './app';
 import lambda from '../src/lambda';
 
-import event from './fixtures/event.json';
+import eventRestApi from './fixtures/event-rest-api.json';
 import eventHttpApi from './fixtures/event-http-api.json';
 import eventHttpApiV1 from './fixtures/event-http-api-1.0.json';
 import eventHttpApiV2 from './fixtures/event-http-api-2.0.json';
@@ -97,7 +97,7 @@ describe('integration', () => {
   });
 
   it('handles API GW event', async () => {
-    const response = await handler(event)
+    const response = await handler(eventRestApi)
     expect(response.statusCode).toEqual(200);
     expect(response.isBase64Encoded).toEqual(false);
     expect(response.multiValueHeaders!["content-type"][0]).toEqual('application/json; charset=utf-8');
