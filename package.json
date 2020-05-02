@@ -34,7 +34,7 @@
   "main": "./dist/compile/lambda",
   "types": "./dist/compile/lambda.d.ts",
   "dependencies": {
-    "in-process-request": "^0.0.9"
+    "in-process-request": "^0.0.10"
   },
   "devDependencies": {
     "@types/compression": "^1.7.0",
@@ -46,7 +46,7 @@
     "cookie-parser": "^1.4.5",
     "ejs": "^3.1.2",
     "express": "^4.17.1",
-    "jest": "^25.4.0",
+    "jest": "^25.5.4",
     "ts-jest": "^25.4.0",
     "ts-node": "^8.9.1",
     "typescript": "^3.8.3"
