@@ -1,6 +1,9 @@
 import eventToRequestOptions from '../src/eventToRequestOptions';
 
 import eventRestApi from './fixtures/event-rest-api.json';
+import eventHttpApiV1 from './fixtures/event-http-api-1.0.json';
+import eventHttpApiV2 from './fixtures/event-http-api-2.0.json';
+import eventHttpApiLegacy from './fixtures/event-http-api.json';
 import eventHealth from './fixtures/health-event.json';
 import eventAlb from './fixtures/alb-event.json';
 import evenMultiHeadertAlb from './fixtures/alb-multi-header-event.json';
@@ -34,6 +37,87 @@ describe('eventToRequestOptions', () => {
         "x-forwarded-proto": "https",
         "accept-encoding": "gzip, deflate, br",
         "upgrade-insecure-requests": "1",
+      },
+    })
+  })
+
+  it('converts Api Gateway HTTP v1 event to RequestOptions object', () => {
+    const reqOpts = eventToRequestOptions(eventHttpApiV1);
+    expect(reqOpts).toEqual({
+      "method": "GET",
+      "path": "/inspect?param=ab%20cd",
+      "remoteAddress": "9.9.9.9",
+      "body": Buffer.alloc(0),
+      "ssl": true,
+      "headers":  {
+        "content-length": "0",
+        "host": "apiid.execute-api.ap-southeast-2.amazonaws.com",
+        "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.129 Safari/537.36",
+        "x-amzn-trace-id": "Root=1-5eac36bd-7a4863e4e05a7ca67c0a68ae",
+        "x-forwarded-for": "1.2.3.4, 4.5.6.7, 9.9.9.9",
+        "x-forwarded-port": "443",
+        "x-forwarded-proto": "https",
+        "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
+        "accept-encoding": "gzip, deflate, br",
+        "accept-language": "en-US,en;q=0.9,pl-PL;q=0.8,pl;q=0.7,ru;q=0.6",
+        "sec-fetch-dest": "document",
+        "sec-fetch-mode": "navigate",
+        "sec-fetch-site": "none",
+        "sec-fetch-user": "?1",
+        "upgrade-insecure-requests": "1",
+        "cookie": "cookie1=value1; cookie2=value2; cookie3=value3; hackyname=h3c%2Fky%3D%3Bva%7Blu%5De"
+      },
+    })
+  })
+
+  it('converts Api Gateway HTTP v2 event to RequestOptions object', () => {
+    const reqOpts = eventToRequestOptions(eventHttpApiV2);
+    expect(reqOpts).toEqual({
+      "method": "GET",
+      "path": "/inspect?param=ab%20cd",
+      "remoteAddress": "9.9.9.9",
+      "body": Buffer.alloc(0),
+      "ssl": true,
+      "headers":  {
+        "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
+        "accept-encoding": "gzip, deflate, br",
+        "accept-language": "en-US,en;q=0.9,pl-PL;q=0.8,pl;q=0.7,ru;q=0.6",
+        "cache-control": "max-age=0",
+        "content-length": "0",
+        "cookie": "cookie1=value1; cookie2=value2; cookie3=value3; hackyname=h3c%2Fky%3D%3Bva%7Blu%5De",
+        "host": "apiid.execute-api.ap-southeast-2.amazonaws.com",
+        "sec-fetch-dest": "document",
+        "sec-fetch-mode": "navigate",
+        "sec-fetch-site": "none",
+        "sec-fetch-user": "?1",
+        "upgrade-insecure-requests": "1",
+        "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.129 Safari/537.36",
+        "x-amzn-trace-id": "Root=1-5eac37e3-8e447320ce745898566b3300",
+        "x-forwarded-for": "1.2.3.4, 4.5.6.7, 9.9.9.9",
+        "x-forwarded-port": "443",
+        "x-forwarded-proto": "https"
+      }
+    })
+  })
+
+  it('converts Api Gateway HTTP legacy event to RequestOptions object', () => {
+    const reqOpts = eventToRequestOptions(eventHttpApiLegacy);
+    expect(reqOpts).toEqual({
+      "method": "GET",
+      "path": "/inspect?param=ab%20cd",
+      "remoteAddress": "9.9.9.9",
+      "body": Buffer.alloc(0),
+      "ssl": true,
+      "headers":  {
+        "content-length": "0",
+        "host": "apiid.execute-api.ap-southeast-2.amazonaws.com",
+        "user-agent": "curl/7.54.0",
+        "x-amzn-trace-id": "Root=1-5de881d0-2a206d74d6702f28f7e78eb0",
+        "x-forwarded-for": "1.2.3.4, 4.5.6.7, 9.9.9.9",
+        "x-forwarded-port": "443",
+        "x-forwarded-proto": "https",
+        "accept": "*/*",
+        "cookie": "cookie1=value1; cookie2=value2; cookie3=value3; hackyname=h3c%2Fky%3D%3Bva%7Blu%5De"
       },
     })
   })
