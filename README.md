@@ -27,6 +27,10 @@ The handler supports events from the following sources:
 - API Gateway [HTTP APIs](https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api.html)
 - [Application Load Balancer](https://docs.aws.amazon.com/lambda/latest/dg/services-alb.html)
 
+## Demo app
+
+There's a [demo app](https://github.com/janaz/lambda-request-handler-example) showcasing the features of this library available [here](https://github.com/janaz/lambda-request-handler-example)
+
 ## Usage
 
 The default export of `lambda-request-handler` is a function that takes an application handler (i.e. Express.js app instance) as an argument and returns an AWS Lambda handler function.
