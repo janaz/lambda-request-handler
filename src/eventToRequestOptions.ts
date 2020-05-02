@@ -28,7 +28,7 @@ const eventToRequestOptions = (event: APIGatewayEvent, ctx?: LambdaContext): InP
   if (ctx) {
     headers['x-aws-lambda-request-id'] = ctx.awsRequestId;
   }
-  if (event.requestContext && event.requestContext.elb) {
+  if (event.requestContext?.elb) {
     //load balancer request - it has the client ip in x-forwarded-for header
     if (typeof headers['x-forwarded-for'] === 'string') {
       const ips = headers['x-forwarded-for'].split(',').map(ip => ip.trim());
@@ -49,8 +49,8 @@ const eventToRequestOptions = (event: APIGatewayEvent, ctx?: LambdaContext): InP
     // api gateway request
     ssl = true;
     const remoteAddressList =
-      event?.requestContext?.identity?.sourceIp ||
-      event?.requestContext?.http?.sourceIp
+      event.requestContext?.identity?.sourceIp ||
+      event.requestContext?.http?.sourceIp
     if (remoteAddressList) {
       // HTTP API includes the full x-forwarder for chain here and the remote ip is the last element
       const items = remoteAddressList.split(',').map(s => s.trim());
@@ -59,7 +59,7 @@ const eventToRequestOptions = (event: APIGatewayEvent, ctx?: LambdaContext): InP
   }
   let method: string | undefined= event.httpMethod;
   let path: string | undefined = event.path;
-  if (event.requestContext && typeof event.requestContext.http === 'object') {
+  if (typeof event.requestContext?.http === 'object') {
     method = event.requestContext.http.method
     path = event.requestContext.http.path
   }
