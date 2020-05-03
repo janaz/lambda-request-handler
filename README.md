@@ -9,7 +9,7 @@ The list of supported frameworks matches [in-process-request](https://github.com
 * Express.js v4
 * Express.js v5
 * Apollo Server v2
-* Hapi v19
+* Hapi v19 (only supported in `nodejs12.x` runtime)
 * Connect v3
 * Koa v2
 
@@ -100,6 +100,9 @@ module.exports = { handler }
 ```
 
 ### Hapi
+
+Please note that Hapi v19 dropped support for Node v10. The only AWS Lambda runtime that supports it is `nodejs12.x`.
+
 ```javascript
 const Hapi = require('@hapi/hapi')
 const lambdaRequestHandler = require('lambda-request-handler')
