@@ -1,6 +1,6 @@
 {
   "name": "lambda-request-handler",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "license": "(MIT OR Apache-2.0)",
   "scripts": {
     "precompile": "rm -rf dist",
