@@ -45,5 +45,6 @@ const handlerBuilder = (appFn: PromiseFactory<RequestListener>): handler.APIGate
 
 const handler = (app: RequestListener) => handlerBuilder(() => Promise.resolve(app));
 handler.deferred = handlerBuilder;
+handler.HapiListener = inProcessRequestHandler.HapiListener;
 
 export = handler;

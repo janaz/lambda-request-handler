@@ -1867,10 +1867,10 @@ imurmurhash@^0.1.4:
   resolved "https://registry.yarnpkg.com/imurmurhash/-/imurmurhash-0.1.4.tgz#9218b9b2b928a238b13dc4fb6b6d576f231453ea"
   integrity sha1-khi5srkoojixPcT7a21XbyMUU+o=
 
-in-process-request@^0.0.10:
-  version "0.0.10"
-  resolved "https://registry.yarnpkg.com/in-process-request/-/in-process-request-0.0.10.tgz#40b7a7b7eaa05bd9f7e18effdfea6fe0f553bb13"
-  integrity sha512-vIoWQMYdzUlx94ElQzy6Ksvq3C+xrneU2+/nIvbPZxeYWkei/stC5eevZAdO88iNRbw82ur1d1Vc67tJhB+C6w==
+in-process-request@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/in-process-request/-/in-process-request-0.1.0.tgz#b4eb82eb2607e5fc8357f1fb755ccb1aac44dad4"
+  integrity sha512-aAGFWPFL0PCP5NFq9XtLMmECHzXGd0pdB+QwzzrYYmPrKMIRGFs/dQbkcurf/1dQiitXnfElz0eqbcFOv7rM6A==
 
 inflight@^1.0.4:
   version "1.0.6"
@@ -3764,10 +3764,10 @@ ts-jest@^25.4.0:
     semver "6.x"
     yargs-parser "18.x"
 
-ts-node@^8.9.1:
-  version "8.9.1"
-  resolved "https://registry.yarnpkg.com/ts-node/-/ts-node-8.9.1.tgz#2f857f46c47e91dcd28a14e052482eb14cfd65a5"
-  integrity sha512-yrq6ODsxEFTLz0R3BX2myf0WBCSQh9A+py8PBo1dCzWIOcvisbyH6akNKqDHMgXePF2kir5mm5JXJTH3OUJYOQ==
+ts-node@^8.10.1:
+  version "8.10.1"
+  resolved "https://registry.yarnpkg.com/ts-node/-/ts-node-8.10.1.tgz#77da0366ff8afbe733596361d2df9a60fc9c9bd3"
+  integrity sha512-bdNz1L4ekHiJul6SHtZWs1ujEKERJnHs4HxN7rjTyyVOFf3HaJ6sLqe6aPG62XTzAB/63pKRh5jTSWL0D7bsvw==
   dependencies:
     arg "^4.1.0"
     diff "^4.0.1"

@@ -8,6 +8,8 @@ The list of supported frameworks matches [in-process-request](https://github.com
 * Express.js v3
 * Express.js v4
 * Express.js v5
+* Apollo Server v2
+* Hapi v19
 * Connect v3
 * Koa v2
 
@@ -42,6 +44,7 @@ An additional header is injected into the request
 $ npm install lambda-request-handler
 ```
 
+### Express.js
 ```javascript
 const express = require('express')
 const lambdaRequestHandler = require('lambda-request-handler')
@@ -63,7 +66,7 @@ module.exports = { handler }
 
 If the above file in your Lambda source was called `index.js` then the name of the handler in the Lambda configuration is `index.handler`
 
-### Advanced example with asynchronous setup
+#### Advanced example with asynchronous setup
 
 Sometimes the application needs to read configuration from remote source before it can start processing requests. For example it may need to decrypt some secrets managed by KMS. For this use case a special helper `deferred` has been provided. It takes a factory function which returns a Promise that resolves to the app instance. The factory function will be called only once.
 
@@ -95,3 +98,38 @@ const handler = lambdaRequestHandler.deferred(myAppPromise);
 module.exports = { handler }
 
 ```
+
+### Hapi
+```javascript
+const Hapi = require('@hapi/hapi')
+const lambdaRequestHandler = require('lambda-request-handler')
+
+// create custom listener for Hapi
+const myListener = new lambdaRequestHandler.HapiListener()
+
+// Pass the custom listener to Hapi.server
+const server = Hapi.server({
+  listener: myListener
+});
+
+server.route({
+  method: 'GET',
+  path: '/',
+  handler: (_request: any, _h: any) => {
+    return 'Hello World!';
+  }
+});
+
+const myAppPromise = async () => {
+  //wait for the server to initialize
+  await server.start()
+  // return the request listener function
+  return myListener.handler
+};
+
+const handler = lambdaRequestHandler.deferred(myAppPromise);
+
+module.exports = { handler }
+```
+
+If the above file in your Lambda source was called `index.js` then the name of the handler in the Lambda configuration is `index.handler`
