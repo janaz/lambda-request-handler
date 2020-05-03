@@ -34,7 +34,8 @@
   "main": "./dist/compile/lambda",
   "types": "./dist/compile/lambda.d.ts",
   "dependencies": {
-    "in-process-request": "^0.1.0"
+    "in-process-request": "^0.1.0",
+    "isutf8": "^2.1.0"
   },
   "devDependencies": {
     "@types/compression": "^1.7.0",
