@@ -95,7 +95,7 @@ describe('inProcessResponseToLambdaResponse', () => {
       expect(res.isBase64Encoded).toEqual(true);
     })
 
-    it('has basee64 body if isUTF8 is set to false and content type starts with text/ and the content is not UTF8', () => {
+    it('has base64 body if isUTF8 is set to false and content type starts with text/ and the content is not UTF8', () => {
       const res = inProcessResponseToLambdaResponse(generateMockResponse({body: Buffer.from([1,2,3,4,5,6]), isUTF8: false, contentType: 'binary/octet-stream'}), false, false);
       expect(res.isBase64Encoded).toEqual(true);
       expect(res.body).toEqual('AQIDBAUG');
