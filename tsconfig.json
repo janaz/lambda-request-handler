@@ -15,7 +15,8 @@
     "skipLibCheck": true,
     "strict": true,
     "declaration": true,
-    "lib": ["es6", "es2016.array.include"]
+    "lib": ["es6", "es2016.array.include"],
+    "typeRoots": ["node_modules/@types", "src/@types"]
   },
   "include": ["./src/**/*"]
 }
