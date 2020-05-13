@@ -35,7 +35,7 @@
   "types": "./dist/compile/lambda.d.ts",
   "dependencies": {
     "in-process-request": "^0.1.0",
-    "isutf8": "^2.1.0"
+    "isutf8": "^3.0.0"
   },
   "devDependencies": {
     "@types/compression": "^1.7.0",
@@ -47,8 +47,8 @@
     "cookie-parser": "^1.4.5",
     "ejs": "^3.1.2",
     "express": "^4.17.1",
-    "jest": "^25.5.4",
-    "ts-jest": "^25.5.0",
+    "jest": "^26.0.1",
+    "ts-jest": "^25.5.1",
     "ts-node": "^8.10.1",
     "typescript": "^3.8.3"
   }
