@@ -10,6 +10,7 @@ The list of supported frameworks matches [in-process-request](https://github.com
 * Express.js v5
 * Apollo Server v2
 * Hapi v19 (only supported in `nodejs12.x` runtime)
+* NestJS v7
 * Connect v3
 * Koa v2
 
@@ -136,3 +137,41 @@ module.exports = { handler }
 ```
 
 If the above file in your Lambda source was called `index.js` then the name of the handler in the Lambda configuration is `index.handler`
+
+### NestJS
+
+This example is in Typescript
+
+```typescript
+import lambdaRequestHandler from 'lambda-request-handler'
+
+import { NestFactory } from '@nestjs/core';
+import { Module, Get, Controller } from '@nestjs/common';
+import { NestExpressApplication } from '@nestjs/platform-express';
+
+@Controller()
+class AppController {
+  @Get()
+  render() {
+    return { hello: 'world' };
+  }
+}
+
+@Module({
+  imports: [],
+  controllers: [AppController],
+})
+class AppModule {}
+
+const getApp = async () => {
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
+
+  return await lambdaRequestHandler.nestHandler(app);
+}
+
+const handler = lambdaRequestHandler.deferred(getApp);
+
+exports = { handler }
+```
+
+If the above file in your Lambda source was called `index.ts`, compiled to `index.js` then the name of the handler in the Lambda configuration is `index.handler`
