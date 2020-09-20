@@ -10,6 +10,7 @@ The list of supported frameworks matches [in-process-request](https://github.com
 * Express.js v5
 * Apollo Server v2
 * Hapi v19 (only supported in `nodejs12.x` runtime)
+* Hapi v20 (only supported in `nodejs12.x` runtime)
 * NestJS v7
 * Connect v3
 * Koa v2
