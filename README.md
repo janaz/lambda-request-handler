@@ -14,6 +14,7 @@ The list of supported frameworks matches [in-process-request](https://github.com
 * NestJS v7
 * Connect v3
 * Koa v2
+* Polka
 
 Inspired by [aws-serverless-express](https://github.com/awslabs/aws-serverless-express)
 
@@ -176,3 +177,26 @@ exports = { handler }
 ```
 
 If the above file in your Lambda source was called `index.ts`, compiled to `index.js` then the name of the handler in the Lambda configuration is `index.handler`
+
+### Polka
+
+```javascript
+const polka = require('polka')
+const lambdaRequestHandler = require('lambda-request-handler')
+
+const app = polka()
+
+app.get('/user/:id', (req, res) => {
+  res.json({
+    id: req.params.id,
+    lambdaRequestId: req.header('x-aws-lambda-request-id')
+    name: 'John'
+  })
+})
+
+const handler = lambdaRequestHandler(app.handler.bind(app))
+
+module.exports = { handler }
+```
+
+If the above file in your Lambda source was called `index.js` then the name of the handler in the Lambda configuration is `index.handler`
