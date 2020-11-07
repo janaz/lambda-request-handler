@@ -47,5 +47,6 @@ const handler = (app: RequestListener) => handlerBuilder(() => Promise.resolve(a
 handler.deferred = handlerBuilder;
 handler.HapiListener = inProcessRequestHandler.HapiListener;
 handler.nestHandler = inProcessRequestHandler.nestHandler;
+handler.fastifyHandler = inProcessRequestHandler.fastifyHandler;
 
 export = handler;

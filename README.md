@@ -15,6 +15,7 @@ The list of supported frameworks matches [in-process-request](https://github.com
 * Connect v3
 * Koa v2
 * Polka
+* Fastify v3
 
 Inspired by [aws-serverless-express](https://github.com/awslabs/aws-serverless-express)
 
