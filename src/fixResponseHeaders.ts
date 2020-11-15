@@ -38,11 +38,14 @@ const fixResponseHeaders = (headers: OutgoingHttpHeaders, supportMultiHeaders: b
       delete multiValueHeaders['transfer-encoding']
     }
   }
+  const output: LambdaResponseHeaders = { headers: singleValueHeaders }
   if (supportMultiHeaders) {
-    return { multiValueHeaders };
-  } else {
-    return { headers: singleValueHeaders, cookies }
+    output.multiValueHeaders = multiValueHeaders
   }
+  if (supportCookies) {
+    output.cookies = cookies
+  }
+  return output
 };
 
 export default fixResponseHeaders;

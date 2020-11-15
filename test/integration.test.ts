@@ -144,7 +144,8 @@ describe('integration', () => {
     expect(response.isBase64Encoded).toEqual(false);
     expect(response.multiValueHeaders!["content-type"][0]).toEqual('application/json; charset=utf-8');
     expect(response.multiValueHeaders!["x-powered-by"][0]).toEqual('Express');
-    expect(response.headers).toBeUndefined()
+    expect(response.headers!["content-type"]).toEqual('application/json; charset=utf-8');
+    expect(response.headers!["x-powered-by"]).toEqual('Express');
     const json = JSON.parse(response.body);
     expect(json).toEqual({
       baseUrl: "",
@@ -187,7 +188,8 @@ describe('integration', () => {
     expect(response.isBase64Encoded).toEqual(false);
     expect(response.multiValueHeaders!["content-type"][0]).toEqual('application/json; charset=utf-8');
     expect(response.multiValueHeaders!["x-powered-by"][0]).toEqual('Express');
-    expect(response.headers).toBeUndefined()
+    expect(response.headers!["content-type"]).toEqual('application/json; charset=utf-8');
+    expect(response.headers!["x-powered-by"]).toEqual('Express');
     const json = JSON.parse(response.body);
     expect(json).toEqual({
       baseUrl: "",
