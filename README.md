@@ -174,7 +174,7 @@ const getApp = async () => {
 
 const handler = lambdaRequestHandler.deferred(getApp);
 
-exports = { handler }
+module.exports = { handler }
 ```
 
 If the above file in your Lambda source was called `index.ts`, compiled to `index.js` then the name of the handler in the Lambda configuration is `index.handler`
