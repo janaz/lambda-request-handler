@@ -65,7 +65,8 @@ describe('integration for deferred app', () => {
       await failingHandler(myEvent)
       fail(new Error('should have failed'))
     } catch (e) {
-      expect(e.message).toEqual('failed to initialize app')
+      const err = e as Error
+      expect(err.message).toEqual('failed to initialize app')
     }
   })
 

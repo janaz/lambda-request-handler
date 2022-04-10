@@ -38,22 +38,22 @@
   "main": "./dist/compile/lambda",
   "types": "./dist/compile/lambda.d.ts",
   "dependencies": {
-    "in-process-request": "^0.3.0",
-    "isutf8": "^3.1.1"
+    "in-process-request": "^0.3.1",
+    "isutf8": "^4.0.0"
   },
   "devDependencies": {
-    "@types/compression": "^1.7.0",
+    "@types/compression": "^1.7.2",
     "@types/cookie-parser": "^1.4.2",
-    "@types/express": "^4.17.11",
-    "@types/jest": "^26.0.22",
-    "@types/node": "^14.14.37",
+    "@types/express": "^4.17.13",
+    "@types/jest": "^27.4.1",
+    "@types/node": "^17.0.23",
     "compression": "^1.7.4",
-    "cookie-parser": "^1.4.5",
+    "cookie-parser": "^1.4.6",
     "ejs": "^3.1.6",
-    "express": "^4.17.1",
-    "jest": "^26.6.3",
-    "ts-jest": "^26.5.4",
-    "ts-node": "^9.1.1",
-    "typescript": "^4.2.3"
+    "express": "^4.17.3",
+    "jest": "^27.5.1",
+    "ts-jest": "^27.1.4",
+    "ts-node": "^10.7.0",
+    "typescript": "^4.6.3"
   }
 }

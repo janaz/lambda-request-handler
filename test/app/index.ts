@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { RequestHandler } from 'express';
 import path from 'path';
 import cookieParser from 'cookie-parser';
 import compression from 'compression';
@@ -10,8 +10,8 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('trust proxy', 2);
 
 app.use(cookieParser());
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.json() as RequestHandler);
+app.use(express.urlencoded({ extended: false }) as RequestHandler);
 
 app.use("/static", compression({}), express.static(path.join(__dirname, 'public')));
 
