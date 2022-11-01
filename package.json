@@ -39,7 +39,8 @@
   "types": "./dist/compile/lambda.d.ts",
   "dependencies": {
     "in-process-request": "^0.3.1",
-    "isutf8": "^4.0.0"
+    "isutf8": "^4.0.0",
+    "light-my-request": "^5.6.1"
   },
   "devDependencies": {
     "@types/compression": "^1.7.2",

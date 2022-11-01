@@ -13,10 +13,13 @@ describe('eventToRequestOptions', () => {
     const reqOpts = eventToRequestOptions(eventRestApi);
     expect(reqOpts).toEqual({
       "method": "GET",
-      "path": "/inspect?param=ab%20cd",
+      "path": {
+        pathname: "/inspect",
+        protocol: 'https',
+        query: {"param": "ab cd"},
+      },
       "remoteAddress": "1.152.111.246",
-      "body": Buffer.alloc(0),
-      "ssl": true,
+      "payload": Buffer.alloc(0),
       "headers":  {
         "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3",
         "accept-language": "en-US,en;q=0.9,pl-PL;q=0.8,pl;q=0.7,ru;q=0.6",
@@ -45,10 +48,13 @@ describe('eventToRequestOptions', () => {
     const reqOpts = eventToRequestOptions(eventHttpApiV1);
     expect(reqOpts).toEqual({
       "method": "GET",
-      "path": "/inspect?param=ab%20cd",
+      "path": {
+        pathname: "/inspect",
+        protocol: 'https',
+        query: {"param": "ab cd"},
+      },
       "remoteAddress": "9.9.9.9",
-      "body": Buffer.alloc(0),
-      "ssl": true,
+      "payload": Buffer.alloc(0),
       "headers":  {
         "content-length": "0",
         "host": "apiid.execute-api.ap-southeast-2.amazonaws.com",
@@ -74,10 +80,13 @@ describe('eventToRequestOptions', () => {
     const reqOpts = eventToRequestOptions(eventHttpApiV2);
     expect(reqOpts).toEqual({
       "method": "GET",
-      "path": "/inspect?param=ab%20cd",
+      "path": {
+        pathname: "/inspect",
+        protocol: 'https',
+        query: {"param": "ab cd"},
+      },
       "remoteAddress": "9.9.9.9",
-      "body": Buffer.alloc(0),
-      "ssl": true,
+      "payload": Buffer.alloc(0),
       "headers":  {
         "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
         "accept-encoding": "gzip, deflate, br",
@@ -104,10 +113,13 @@ describe('eventToRequestOptions', () => {
     const reqOpts = eventToRequestOptions(eventHttpApiLegacy);
     expect(reqOpts).toEqual({
       "method": "GET",
-      "path": "/inspect?param=ab%20cd",
+      "path": {
+        pathname: "/inspect",
+        protocol: 'https',
+        query: {"param": "ab cd"},
+      },
       "remoteAddress": "9.9.9.9",
-      "body": Buffer.alloc(0),
-      "ssl": true,
+      "payload": Buffer.alloc(0),
       "headers":  {
         "content-length": "0",
         "host": "apiid.execute-api.ap-southeast-2.amazonaws.com",
@@ -126,10 +138,13 @@ describe('eventToRequestOptions', () => {
     const reqOpts = eventToRequestOptions(eventAlb);
     expect(reqOpts).toEqual({
       "method": "GET",
-      "path": "/inspect?param=ab%20cd",
+      "path": {
+        pathname: "/inspect",
+        protocol: 'http',
+        query: {"param": "ab cd"},
+      },
       "remoteAddress": "1.136.104.131",
-      "body": Buffer.alloc(0),
-      "ssl": false,
+      "payload": Buffer.alloc(0),
       "headers":  {
         "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3",
         "accept-language": "en-US,en;q=0.9,pl-PL;q=0.8,pl;q=0.7,ru;q=0.6",
@@ -148,10 +163,15 @@ describe('eventToRequestOptions', () => {
     const reqOpts = eventToRequestOptions(evenMultiHeadertAlb);
     expect(reqOpts).toEqual({
       "method": "GET",
-      "path": "/inspect?param=ab%20cd",
+      "path": {
+        pathname: "/inspect",
+        protocol: 'http',
+        query: {
+          "param": "ab cd",
+        },
+      },
       "remoteAddress": "1.136.104.131",
-      "body": Buffer.alloc(0),
-      "ssl": false,
+      "payload": Buffer.alloc(0),
       "headers":  {
         "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3",
         "accept-language": "en-US,en;q=0.9,pl-PL;q=0.8,pl;q=0.7,ru;q=0.6",
@@ -191,10 +211,13 @@ describe('eventToRequestOptions', () => {
       });
       expect(reqOpts).toEqual({
         "method": "HEAD",
-        "path": "/",
+        "path": {
+          pathname: "/",
+          protocol: 'http',
+          query: {},
+        },
         "remoteAddress": '129.45.45.48',
-        "body": Buffer.alloc(0),
-        "ssl": false,
+        "payload": Buffer.alloc(0),
         "headers":  {
           "x-forwarded-for": "10.10.2.3",
           "x-forwarded-proto": "http",
@@ -223,10 +246,13 @@ describe('eventToRequestOptions', () => {
 
       expect(reqOpts).toEqual({
         "method": "HEAD",
-        "path": "/",
+        "path": {
+          pathname: "/",
+          protocol: 'https',
+          query: {},
+        },
         "remoteAddress": '129.45.45.48',
-        "body": Buffer.alloc(0),
-        "ssl": true,
+        "payload": Buffer.alloc(0),
         "headers":  {
         },
       })
@@ -236,10 +262,13 @@ describe('eventToRequestOptions', () => {
       const reqOpts = eventToRequestOptions(eventHealth);
       expect(reqOpts).toEqual({
         "method": "HEAD",
-        "path": "/",
+        "path": {
+          pathname: "/",
+          protocol: 'http',
+          query: {},
+        },
         "remoteAddress": undefined,
-        "body": Buffer.alloc(0),
-        "ssl": false,
+        "payload": Buffer.alloc(0),
         "headers":  {
           "user-agent": "ELB-HealthChecker/2.0",
         },

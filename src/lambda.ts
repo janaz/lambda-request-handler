@@ -3,7 +3,7 @@ import inProcessRequestHandler from 'in-process-request';
 import * as apigw from './types';
 import eventToRequestOptions from './eventToRequestOptions'
 import { inProcessResponseToLambdaResponse, errorResponse } from './response';
-import { MockRequestOptions, MockResponse } from 'in-process-request/dist/compile/httpMock';
+import { inject } from 'light-my-request';
 
 declare namespace handler {
   type APIGatewayEvent = apigw.APIGatewayEvent;
@@ -26,15 +26,14 @@ const eventSupportsCookies = (event: handler.APIGatewayEvent): boolean => {
 }
 
 const handlerBuilder = (appFn: PromiseFactory<RequestListener>): handler.APIGatewayEventHandler => {
-  let appHandler: Nullable<F<MockRequestOptions, Promise<MockResponse>>>;
+  let dispatch: Nullable<RequestListener>;
   return async (event, ctx) => {
-    if (!appHandler) {
-      const resolvedApp = await appFn();
-      appHandler = inProcessRequestHandler(resolvedApp);
+    if (!dispatch) {
+      dispatch = await appFn();
     }
     try {
       const reqOptions = eventToRequestOptions(event, ctx);
-      const mockResponse = await appHandler(reqOptions);
+      const mockResponse = await inject(dispatch, reqOptions);
       return inProcessResponseToLambdaResponse(mockResponse, eventHasMultiValueHeaders(event), eventSupportsCookies(event));
     } catch (e) {
       console.error(e);

@@ -1,23 +1,21 @@
+import { Response } from 'light-my-request';
 import { inProcessResponseToLambdaResponse, errorResponse} from '../src/response';
-import { InProcessResponse } from 'in-process-request';
 
 describe('inProcessResponseToLambdaResponse', () => {
   interface GenerateMockResponseOptions {
     body?: Buffer
-    isUTF8?: boolean
     contentType?: string
   }
-  const generateMockResponse = (opts: GenerateMockResponseOptions = {}): InProcessResponse => ({
-    body: opts.body || Buffer.from('hello'),
+  const generateMockResponse = (opts: GenerateMockResponseOptions = {}): Response => ({
+    rawPayload: opts.body || Buffer.from('hello'),
     headers: {
       'set-cookie': ['chocolate=10; Path=/', 'peanut_butter=20; Path=/'],
       'content-type': opts.contentType || 'text/plain',
       'x-custom': '10',
     },
-    isUTF8: opts.isUTF8 === true,
     statusCode: 200,
     statusMessage: 'OK',
-  });
+  }) as any;
 
   it('returns 200', () => {
     const res = inProcessResponseToLambdaResponse(generateMockResponse(), true, false);
@@ -86,17 +84,17 @@ describe('inProcessResponseToLambdaResponse', () => {
 
   describe('when the body is not utf8', () => {
     it('has base64 body', () => {
-      const res = inProcessResponseToLambdaResponse(generateMockResponse({isUTF8: false, contentType: 'not-text/plain'}), true, false);
+      const res = inProcessResponseToLambdaResponse(generateMockResponse({contentType: 'not-text/plain'}), true, false);
       expect(res.body).toEqual('aGVsbG8=');
     })
 
     it('is not base64 encoded', () => {
-      const res = inProcessResponseToLambdaResponse(generateMockResponse({isUTF8: false, contentType: 'not-text/plain'}), true, false);
+      const res = inProcessResponseToLambdaResponse(generateMockResponse({contentType: 'not-text/plain'}), true, false);
       expect(res.isBase64Encoded).toEqual(true);
     })
 
     it('has base64 body if isUTF8 is set to false and content type starts with text/ and the content is not UTF8', () => {
-      const res = inProcessResponseToLambdaResponse(generateMockResponse({body: Buffer.from([1,2,3,4,5,6]), isUTF8: false, contentType: 'binary/octet-stream'}), false, false);
+      const res = inProcessResponseToLambdaResponse(generateMockResponse({body: Buffer.from([1,2,3,4,5,6]), contentType: 'binary/octet-stream'}), false, false);
       expect(res.isBase64Encoded).toEqual(true);
       expect(res.body).toEqual('AQIDBAUG');
     })
@@ -104,16 +102,10 @@ describe('inProcessResponseToLambdaResponse', () => {
   })
 
   describe('UTF8 content', () => {
-    it('has utf8 body if isUTF8 is set to true', () => {
-      const res = inProcessResponseToLambdaResponse(generateMockResponse({isUTF8: true, contentType: 'not-text/plain'}), false, false);
+    it('has utf8 body if content type is set to text and body is utf8', () => {
+      const res = inProcessResponseToLambdaResponse(generateMockResponse({contentType: 'text/whatever'}), false, false);
       expect(res.isBase64Encoded).toEqual(false);
       expect(res.body).toEqual('hello');
-    })
-
-    it('has utf8 body if isUTF8 is set to false but content type starts with text/ and the content is text', () => {
-      const res = inProcessResponseToLambdaResponse(generateMockResponse({body: Buffer.from('text'), isUTF8: false, contentType: 'text/plain'}), false, false);
-      expect(res.isBase64Encoded).toEqual(false);
-      expect(res.body).toEqual('text');
     })
   })
 

@@ -1,6 +1,5 @@
-import * as url from 'url';
+import {type InjectOptions} from "light-my-request"
 
-import { InProcessRequestOptions } from 'in-process-request';
 import { APIGatewayEvent, StringMap, LambdaContext } from './types';
 
 const getValuesFromStringAndMultiString = (stringMap: StringMap<string> | null | undefined, multiStringMap: StringMap<string[]> | null | undefined, lcKeys = true): StringMap<string> => {
@@ -17,7 +16,7 @@ const getValuesFromStringAndMultiString = (stringMap: StringMap<string> | null |
   return retVal;
 }
 
-const eventToRequestOptions = (event: APIGatewayEvent, ctx?: LambdaContext): InProcessRequestOptions => {
+const eventToRequestOptions = (event: APIGatewayEvent, ctx?: LambdaContext): InjectOptions => {
   let remoteAddress:string | undefined = undefined;
   let ssl = false;
   const queryStringParams = getValuesFromStringAndMultiString(event.queryStringParameters, event.multiValueQueryStringParameters, false);
@@ -64,11 +63,14 @@ const eventToRequestOptions = (event: APIGatewayEvent, ctx?: LambdaContext): InP
     path = event.requestContext.http.path
   }
   return {
-    method,
-    path: url.format({ pathname: path, query: queryStringParams }),
+    method: (method || 'get') as any,
+    path: {
+      pathname: path!!,
+      query: queryStringParams,
+      protocol: ssl ? 'https' : 'http',
+    },
     headers: headers,
-    body: Buffer.from(event.body || '', event.isBase64Encoded ? 'base64' : 'utf8'),
-    ssl,
+    payload: Buffer.from(event.body || '', event.isBase64Encoded ? 'base64' : 'utf8'),
     remoteAddress
   };
 }
