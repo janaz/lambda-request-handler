@@ -1,91 +1,73 @@
 {
-    "version": 2,
-    "path": "/inspect",
+  "version": 2,
+  "path": "/inspect",
+  "httpMethod": "GET",
+  "headers": {
+    "Content-Length": "0",
+    "Host": "apiid.execute-api.ap-southeast-2.amazonaws.com",
+    "User-Agent": "curl/7.54.0",
+    "X-Amzn-Trace-Id": "Root=1-5de881d0-2a206d74d6702f28f7e78eb0",
+    "X-Forwarded-For": "1.2.3.4, 4.5.6.7, 9.9.9.9",
+    "X-Forwarded-Port": "443",
+    "X-Forwarded-Proto": "https",
+    "accept": "*/*",
+    "cookie": "cookie1=value1; cookie2=value2; cookie3=value3; hackyname=h3c%2Fky%3D%3Bva%7Blu%5De"
+  },
+  "multiValueHeaders": {
+    "Content-Length": ["0"],
+    "Host": ["apiid.execute-api.ap-southeast-2.amazonaws.com"],
+    "User-Agent": ["curl/7.54.0"],
+    "X-Amzn-Trace-Id": ["Root=1-5de881d0-2a206d74d6702f28f7e78eb0"],
+    "X-Forwarded-For": ["1.2.3.4, 4.5.6.7, 9.9.9.9"],
+    "X-Forwarded-Port": ["443"],
+    "X-Forwarded-Proto": ["https"],
+    "accept": ["*/*"],
+    "cookie": [
+      "cookie1=value1; cookie2=value2; cookie3=value3; hackyname=h3c%2Fky%3D%3Bva%7Blu%5De"
+    ]
+  },
+  "queryStringParameters": {
+    "param": "ab cd"
+  },
+  "multiValueQueryStringParameters": {
+    "param": ["ab cd"]
+  },
+  "requestContext": {
+    "accountId": "248139140343",
+    "apiId": "apiid",
+    "authorizer": {
+      "claims": null,
+      "scopes": null
+    },
+    "domainName": "apiid.execute-api.ap-southeast-2.amazonaws.com",
+    "domainPrefix": "apiid",
+    "extendedRequestId": null,
     "httpMethod": "GET",
-    "headers": {
-        "Content-Length": "0",
-        "Host": "apiid.execute-api.ap-southeast-2.amazonaws.com",
-        "User-Agent": "curl/7.54.0",
-        "X-Amzn-Trace-Id": "Root=1-5de881d0-2a206d74d6702f28f7e78eb0",
-        "X-Forwarded-For": "1.2.3.4, 4.5.6.7, 9.9.9.9",
-        "X-Forwarded-Port": "443",
-        "X-Forwarded-Proto": "https",
-        "accept": "*/*",
-        "cookie": "cookie1=value1; cookie2=value2; cookie3=value3; hackyname=h3c%2Fky%3D%3Bva%7Blu%5De"
+    "identity": {
+      "accessKey": null,
+      "accountId": null,
+      "caller": null,
+      "cognitoAuthenticationProvider": null,
+      "cognitoAuthenticationType": null,
+      "cognitoIdentityId": null,
+      "cognitoIdentityPoolId": null,
+      "principalOrgId": null,
+      "sourceIp": "1.2.3.4, 4.5.6.7, 9.9.9.9",
+      "user": null,
+      "userAgent": "curl/7.54.0",
+      "userArn": null
     },
-    "multiValueHeaders": {
-        "Content-Length": [
-            "0"
-        ],
-        "Host": [
-            "apiid.execute-api.ap-southeast-2.amazonaws.com"
-        ],
-        "User-Agent": [
-            "curl/7.54.0"
-        ],
-        "X-Amzn-Trace-Id": [
-            "Root=1-5de881d0-2a206d74d6702f28f7e78eb0"
-        ],
-        "X-Forwarded-For": [
-            "1.2.3.4, 4.5.6.7, 9.9.9.9"
-        ],
-        "X-Forwarded-Port": [
-            "443"
-        ],
-        "X-Forwarded-Proto": [
-            "https"
-        ],
-        "accept": [
-            "*/*"
-        ],
-        "cookie": [
-            "cookie1=value1; cookie2=value2; cookie3=value3; hackyname=h3c%2Fky%3D%3Bva%7Blu%5De"
-        ]
-    },
-    "queryStringParameters": {
-        "param": "ab cd"
-    },
-    "multiValueQueryStringParameters": {
-        "param": [
-            "ab cd"
-        ]
-    },
-    "requestContext": {
-        "accountId": "248139140343",
-        "apiId": "apiid",
-        "authorizer": {
-            "claims": null,
-            "scopes": null
-        },
-        "domainName": "apiid.execute-api.ap-southeast-2.amazonaws.com",
-        "domainPrefix": "apiid",
-        "extendedRequestId": null,
-        "httpMethod": "GET",
-        "identity": {
-            "accessKey": null,
-            "accountId": null,
-            "caller": null,
-            "cognitoAuthenticationProvider": null,
-            "cognitoAuthenticationType": null,
-            "cognitoIdentityId": null,
-            "cognitoIdentityPoolId": null,
-            "principalOrgId": null,
-            "sourceIp": "1.2.3.4, 4.5.6.7, 9.9.9.9",
-            "user": null,
-            "userAgent": "curl/7.54.0",
-            "userArn": null
-        },
-        "path": "/inspect",
-        "protocol": "HTTP/1.1",
-        "requestId": null,
-        "requestTime": "05/Dec/2019:04:04:32 +0000",
-        "requestTimeEpoch": 1575518672924,
-        "resourceId": null,
-        "resourcePath": "/inspect",
-        "stage": "$default"
-    },
-    "pathParameters": null,
-    "stageVariables": null,
-    "body": null,
-    "isBase64Encoded": true
+    "path": "/inspect",
+    "protocol": "HTTP/1.1",
+    "requestId": null,
+    "requestTime": "05/Dec/2019:04:04:32 +0000",
+    "requestTimeEpoch": 1575518672924,
+    "resourceId": null,
+    "resourcePath": "/inspect",
+    "stage": "$default"
+  },
+  "pathParameters": null,
+  "stageVariables": null,
+  "body": null,
+  "isBase64Encoded": true
 }

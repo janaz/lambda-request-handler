@@ -1,14 +1,14 @@
 {
   "requestContext": {
-      "elb": {
-          "targetGroupArn": "arn:aws:elasticloadbalancing:ap-southeast-2:248139140343:targetgroup/default/277714cd42070f8a"
-      }
+    "elb": {
+      "targetGroupArn": "arn:aws:elasticloadbalancing:ap-southeast-2:248139140343:targetgroup/default/277714cd42070f8a"
+    }
   },
   "httpMethod": "HEAD",
   "path": "/",
   "queryStringParameters": {},
   "headers": {
-      "user-agent": "ELB-HealthChecker/2.0"
+    "user-agent": "ELB-HealthChecker/2.0"
   },
   "body": "",
   "isBase64Encoded": false

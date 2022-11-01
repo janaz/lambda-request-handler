@@ -1,0 +1,11 @@
+static
+node_modules
+coverage
+__sapper__
+src/parser
+.vscode
+package-lock.json
+.svelte-kit
+build
+dist
+
