@@ -54,8 +54,9 @@ describe("integration for deferred app", () => {
   })
 
   it("handler returns rejected promise if app cannot be initialized", async () => {
-    const failingHandler = lambda.deferred(() =>
-      Promise.reject(new Error("failed to initialize app"))
+    const failingHandler = lambda.deferred(
+      () => Promise.reject(new Error("failed to initialize app")),
+      { onError: async () => undefined }
     )
     const myEvent = {
       path: "/static/file.png",
@@ -75,10 +76,12 @@ describe("integration for deferred app", () => {
   })
 
   it("returns 500 if there is a problem with the request", async () => {
-    const failingApp = lambda.deferred(() =>
-      Promise.resolve(() => {
-        throw new Error("failed")
-      })
+    const failingApp = lambda.deferred(
+      () =>
+        Promise.resolve(() => {
+          throw new Error("failed")
+        }),
+      { onError: async () => undefined }
     )
     const myEvent = {
       path: "/static/file.png",
