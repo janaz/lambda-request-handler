@@ -1,6 +1,6 @@
 {
   "name": "lambda-request-handler",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "license": "(MIT OR Apache-2.0)",
   "scripts": {
     "prettier": "prettier --write .",
