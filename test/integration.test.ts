@@ -6,6 +6,7 @@ import eventRestApi from "./fixtures/event-rest-api.json"
 import eventHttpApi from "./fixtures/event-http-api.json"
 import eventHttpApiV1 from "./fixtures/event-http-api-1.0.json"
 import eventHttpApiV2 from "./fixtures/event-http-api-2.0.json"
+import eventLambdaUrl from "./fixtures/event-lambda-url.json"
 import eventAlb from "./fixtures/alb-event.json"
 
 const handler = lambda(app)
@@ -267,6 +268,49 @@ describe("integration", () => {
       subdomains: ["ap-southeast-2", "execute-api", "apiid"],
       url: "/inspect?param=ab+cd",
       xForwardedFor: "1.2.3.4, 4.5.6.7, 9.9.9.9",
+      xhr: false,
+    })
+  })
+
+  it("handles Lambda Url event", async () => {
+    const response = await handler(eventLambdaUrl)
+    expect(response.statusCode).toEqual(200)
+    expect(response.isBase64Encoded).toEqual(false)
+    expect(response.headers!["content-type"]).toEqual(
+      "application/json; charset=utf-8"
+    )
+    expect(response.headers!["x-powered-by"]).toEqual("Express")
+    expect(response.multiValueHeaders).toBeUndefined()
+    const json = JSON.parse(response.body)
+    expect(json).toEqual({
+      baseUrl: "",
+      body: {},
+      cookies: {
+        cookie1: "value1",
+      },
+      fresh: false,
+      hostname:
+        "uh7wqgxfah6pv7xm35xyjmev3e0tifwv.lambda-url.ap-southeast-2.on.aws",
+      ip: "9.9.9.9",
+      ips: ["9.9.9.9"],
+      method: "GET",
+      originalUrl: "/inspect?param=ab+cd",
+      params: {},
+      path: "/inspect",
+      protocol: "https",
+      query: {
+        param: "ab cd",
+      },
+      secure: true,
+      signedCookies: {},
+      stale: true,
+      subdomains: [
+        "ap-southeast-2",
+        "lambda-url",
+        "uh7wqgxfah6pv7xm35xyjmev3e0tifwv",
+      ],
+      url: "/inspect?param=ab+cd",
+      xForwardedFor: "9.9.9.9",
       xhr: false,
     })
   })

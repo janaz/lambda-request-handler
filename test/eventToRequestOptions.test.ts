@@ -6,6 +6,7 @@ import eventHttpApiV2 from "./fixtures/event-http-api-2.0.json"
 import eventHttpApiLegacy from "./fixtures/event-http-api.json"
 import eventHealth from "./fixtures/health-event.json"
 import eventAlb from "./fixtures/alb-event.json"
+import eventLambdaUrl from "./fixtures/event-lambda-url.json"
 import evenMultiHeadertAlb from "./fixtures/alb-multi-header-event.json"
 
 describe("eventToRequestOptions", () => {
@@ -113,6 +114,48 @@ describe("eventToRequestOptions", () => {
           "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.129 Safari/537.36",
         "x-amzn-trace-id": "Root=1-5eac37e3-8e447320ce745898566b3300",
         "x-forwarded-for": "1.2.3.4, 4.5.6.7, 9.9.9.9",
+        "x-forwarded-port": "443",
+        "x-forwarded-proto": "https",
+      },
+    })
+  })
+
+  it("converts Lambda Url event to RequestOptions object", () => {
+    const reqOpts = eventToRequestOptions(eventLambdaUrl)
+    expect(reqOpts).toEqual({
+      method: "GET",
+      path: {
+        pathname: "/inspect",
+        protocol: "https",
+        query: { param: "ab cd" },
+      },
+      remoteAddress: "9.9.9.9",
+      payload: Buffer.alloc(0),
+      headers: {
+        accept:
+          "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
+        "accept-encoding": "gzip, deflate, br",
+        "accept-language":
+          "en-AU,en;q=0.9,pl-PL;q=0.8,pl;q=0.7,en-GB;q=0.6,en-US;q=0.5",
+        "cache-control": "no-cache",
+        cookie: "cookie1=value1",
+        host: "uh7wqgxfah6pv7xm35xyjmev3e0tifwv.lambda-url.ap-southeast-2.on.aws",
+        pragma: "no-cache",
+        "sec-ch-ua":
+          '"Google Chrome";v="107", "Chromium";v="107", "Not=A?Brand";v="24"',
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": '"macOS"',
+        "sec-fetch-dest": "document",
+        "sec-fetch-mode": "navigate",
+        "sec-fetch-site": "none",
+        "sec-fetch-user": "?1",
+        "upgrade-insecure-requests": "1",
+        "user-agent":
+          "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36",
+        "x-amzn-tls-cipher-suite": "ECDHE-RSA-AES128-GCM-SHA256",
+        "x-amzn-tls-version": "TLSv1.2",
+        "x-amzn-trace-id": "Root=1-63833daf-2b68425f0431c7477a997202",
+        "x-forwarded-for": "9.9.9.9",
         "x-forwarded-port": "443",
         "x-forwarded-proto": "https",
       },

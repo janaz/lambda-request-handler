@@ -1,0 +1,54 @@
+{
+  "version": "2.0",
+  "routeKey": "$default",
+  "rawPath": "/inspect",
+  "rawQueryString": "param=ab%20cd",
+  "cookies": [
+    "cookie1=value1"
+  ],
+  "headers": {
+    "sec-fetch-mode": "navigate",
+    "x-amzn-tls-version": "TLSv1.2",
+    "sec-fetch-site": "none",
+    "accept-language": "en-AU,en;q=0.9,pl-PL;q=0.8,pl;q=0.7,en-GB;q=0.6,en-US;q=0.5",
+    "x-forwarded-proto": "https",
+    "x-forwarded-port": "443",
+    "x-forwarded-for": "9.9.9.9",
+    "sec-fetch-user": "?1",
+    "pragma": "no-cache",
+    "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
+    "x-amzn-tls-cipher-suite": "ECDHE-RSA-AES128-GCM-SHA256",
+    "sec-ch-ua": "\"Google Chrome\";v=\"107\", \"Chromium\";v=\"107\", \"Not=A?Brand\";v=\"24\"",
+    "sec-ch-ua-mobile": "?0",
+    "x-amzn-trace-id": "Root=1-63833daf-2b68425f0431c7477a997202",
+    "sec-ch-ua-platform": "\"macOS\"",
+    "host": "uh7wqgxfah6pv7xm35xyjmev3e0tifwv.lambda-url.ap-southeast-2.on.aws",
+    "upgrade-insecure-requests": "1",
+    "cache-control": "no-cache",
+    "accept-encoding": "gzip, deflate, br",
+    "sec-fetch-dest": "document",
+    "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36"
+  },
+  "queryStringParameters": {
+    "param": "ab cd"
+  },
+  "requestContext": {
+    "accountId": "anonymous",
+    "apiId": "uh7wqgxfah6pv7xm35xyjmev3e0tifwv",
+    "domainName": "uh7wqgxfah6pv7xm35xyjmev3e0tifwv.lambda-url.ap-southeast-2.on.aws",
+    "domainPrefix": "uh7wqgxfah6pv7xm35xyjmev3e0tifwv",
+    "http": {
+      "method": "GET",
+      "path": "/inspect",
+      "protocol": "HTTP/1.1",
+      "sourceIp": "9.9.9.9",
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36"
+    },
+    "requestId": "b56a2b87-d96e-4d64-9092-5dd4097011cb",
+    "routeKey": "$default",
+    "stage": "$default",
+    "time": "27/Nov/2022:10:36:31 +0000",
+    "timeEpoch": 1669545391654
+  },
+  "isBase64Encoded": false
+}
