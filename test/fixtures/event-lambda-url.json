@@ -3,9 +3,7 @@
   "routeKey": "$default",
   "rawPath": "/inspect",
   "rawQueryString": "param=ab%20cd",
-  "cookies": [
-    "cookie1=value1"
-  ],
+  "cookies": ["cookie1=value1"],
   "headers": {
     "sec-fetch-mode": "navigate",
     "x-amzn-tls-version": "TLSv1.2",
