@@ -15,7 +15,7 @@ describe("fixResponseHeaders - multi", () => {
     it('is not removed when the value is not "chunked"', () => {
       const fixed = fixResponseHeaders(
         {
-          "transfer-encoding": ["not-chunked", "chunked"],
+          "transfer-encoding": ["not-chunked", "chunked"] as any,
         },
         true,
         false
